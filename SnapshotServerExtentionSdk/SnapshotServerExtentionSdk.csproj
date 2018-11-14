@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ImportGroup>
+    <Import Project="..\SnapshotParent\SnapshotServer.csproj" />
+  </ImportGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.2.0" />
+    <PackageReference Include="SimpleInjector" Version="$(Lib_SimpleInjector)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SnapshotShareCommon\SnapshotShareCommon.csproj" />
+    <ProjectReference Include="..\SnapshotServerServiceInfra\SnapshotServerServiceInfra.csproj" />
+  </ItemGroup>
+</Project>

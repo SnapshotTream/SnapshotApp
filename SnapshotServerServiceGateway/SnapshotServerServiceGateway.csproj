@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ImportGroup>
+    <Import Project="..\SnapshotParent\SnapshotServer.csproj" />
+  </ImportGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.2" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SnapshotShareCommon\SnapshotShareCommon.csproj" />
+    <ProjectReference Include="..\SnapshotServerServiceInfra\SnapshotServerServiceInfra.csproj" />
+    <ProjectReference Include="..\SnapshotServerServiceData\SnapshotServerServiceData.csproj" />
+    <ProjectReference Include="..\SnapshotServerExtentionSdk\SnapshotServerExtentionSdk.csproj" />
+  </ItemGroup>
+
+</Project>

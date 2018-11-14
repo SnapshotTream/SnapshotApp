@@ -1,0 +1,5 @@
+{
+    "/api/category/:id": "/categorytree_:id",
+    "/api/category/1/contents": "/category_1_contents",
+    "/api/category/2/contents": "/category_2_contents"
+}

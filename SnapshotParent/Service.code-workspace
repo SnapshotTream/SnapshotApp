@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "D:\\Project\\Snapshot\\SnapshotServerServiceApi"
+		},
+		{
+			"path": "D:\\Project\\Snapshot\\SnapshotServerServiceCore"
+		},
+		{
+			"path": "D:\\Project\\Snapshot\\SnapshotServerServiceData"
+		},
+		{
+			"path": "D:\\Project\\Snapshot\\SnapshotServerServiceGateway"
+		},
+		{
+			"path": "D:\\Project\\Snapshot\\SnapshotServerServiceInfra"
+		},
+		{
+			"path": "D:\\Project\\Snapshot\\SnapshotShareCommon"
+		},
+		{
+			"path": "D:\\Project\\Snapshot\\SnapshotServerExtentionSdk"
+		}
+	],
+	"settings": {}
+}

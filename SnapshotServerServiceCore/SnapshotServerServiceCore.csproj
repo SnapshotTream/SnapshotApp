@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ImportGroup>
+    <Import Project="..\SnapshotParent\SnapshotServer.csproj" />
+  </ImportGroup>
+
+  <ItemGroup>
+    <PackageReference Include="protobuf-net" Version="2.3.7" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0004" />
+    <PackageReference Include="SimpleInjector" Version="$(Lib_SimpleInjector)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SnapshotShareCommon\SnapshotShareCommon.csproj" />
+    <ProjectReference Include="..\SnapshotServerServiceInfra\SnapshotServerServiceInfra.csproj" />
+    <ProjectReference Include="..\SnapshotServerServiceData\SnapshotServerServiceData.csproj" />
+    <ProjectReference Include="..\SnapshotServerServiceGateway\SnapshotServerServiceGateway.csproj" />
+  </ItemGroup>
+</Project>

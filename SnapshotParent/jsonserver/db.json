@@ -1,0 +1,77 @@
+{
+  "categorytree_0": {
+    "value": [
+      {
+        "Id": 1,
+        "Name": "カテゴリ(1)",
+        "HasLinkSubCategoryFlag": true
+      },
+      {
+        "Id": 2,
+        "Name": "カテゴリ(2)",
+        "HasLinkSubCategoryFlag": false
+      },
+      {
+        "Id": 3,
+        "Name": "カテゴリ(3)",
+        "HasLinkSubCategoryFlag": true
+      }
+    ]
+  },
+  "categorytree_1": {
+    "value": [
+      {
+        "Id": 4,
+        "Name": "カテゴリ(4)",
+        "HasLinkSubCategoryFlag": false
+      }
+    ]
+  },
+  "categorytree_3": {
+    "value": [
+      {
+        "Id": 5,
+        "Name": "カテゴリ(5)",
+        "HasLinkSubCategoryFlag": false
+      }
+    ]
+  },
+  "category_1_contents": {
+    "value": [
+      {
+        "Id": 1,
+        "Name": "Content1",
+        "ThumbnailImageSrcUrl": "https://i.ytimg.com/vi/28t_YGckhbI/hqdefault.jpg?sqp=-oaymwEiCKgBEF5IWvKriqkDFQgBFQAAAAAYASUAAMhCPQCAokN4AQ==&rs=AOn4CLCGLLB8pkrKZkmtsw4d4RALqYU_FQ"
+      }
+    ]
+  },
+  "category_2_contents": {
+    "value": [
+      {
+        "Id": 2,
+        "Name": "Content2",
+        "ThumbnailImageSrcUrl": "https://i.ytimg.com/vi/28t_YGckhbI/hqdefault.jpg?sqp=-oaymwEiCKgBEF5IWvKriqkDFQgBFQAAAAAYASUAAMhCPQCAokN4AQ==&rs=AOn4CLCGLLB8pkrKZkmtsw4d4RALqYU_FQ"
+      },
+      {
+        "Id": 3,
+        "Name": "Content3",
+        "ThumbnailImageSrcUrl": "https://i.ytimg.com/vi/28t_YGckhbI/hqdefault.jpg?sqp=-oaymwEiCKgBEF5IWvKriqkDFQgBFQAAAAAYASUAAMhCPQCAokN4AQ==&rs=AOn4CLCGLLB8pkrKZkmtsw4d4RALqYU_FQ"
+      },
+      {
+        "Id": 4,
+        "Name": "Content4",
+        "ThumbnailImageSrcUrl": "https://i.ytimg.com/vi/28t_YGckhbI/hqdefault.jpg?sqp=-oaymwEiCKgBEF5IWvKriqkDFQgBFQAAAAAYASUAAMhCPQCAokN4AQ==&rs=AOn4CLCGLLB8pkrKZkmtsw4d4RALqYU_FQ"
+      },
+      {
+        "Id": 5,
+        "Name": "Content5",
+        "ThumbnailImageSrcUrl": "https://i.ytimg.com/vi/28t_YGckhbI/hqdefault.jpg?sqp=-oaymwEiCKgBEF5IWvKriqkDFQgBFQAAAAAYASUAAMhCPQCAokN4AQ==&rs=AOn4CLCGLLB8pkrKZkmtsw4d4RALqYU_FQ"
+      },
+      {
+        "Id": 6,
+        "Name": "Content6",
+        "ThumbnailImageSrcUrl": "https://i.ytimg.com/vi/28t_YGckhbI/hqdefault.jpg?sqp=-oaymwEiCKgBEF5IWvKriqkDFQgBFQAAAAAYASUAAMhCPQCAokN4AQ==&rs=AOn4CLCGLLB8pkrKZkmtsw4d4RALqYU_FQ"
+      }
+    ]
+  }
+}

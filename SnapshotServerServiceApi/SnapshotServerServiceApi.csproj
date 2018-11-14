@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ImportGroup>
+    <Import Project="..\SnapshotParent\SnapshotServer.csproj" />
+  </ImportGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="NLog" Version="4.5.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SnapshotShareCommon\SnapshotShareCommon.csproj" />
+    <ProjectReference Include="..\SnapshotServerServiceInfra\SnapshotServerServiceInfra.csproj" />
+    <ProjectReference Include="..\SnapshotServerServiceData\SnapshotServerServiceData.csproj" />
+    <ProjectReference Include="..\SnapshotServerServiceCore\SnapshotServerServiceCore.csproj" />
+    <ProjectReference Include="..\SnapshotServerServiceGateway\SnapshotServerServiceGateway.csproj" />
+  </ItemGroup>
+
+</Project>

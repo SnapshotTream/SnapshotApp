@@ -1,8 +1,8 @@
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 using NLog;
 using SimpleInjector;
 
-namespace Foxpict.Service.Core.Service {
+namespace Snapshot.Server.Service.Core.Service.Service {
   public class VirtualFileUpdateWatchService {
     private readonly Logger mLogger;
 

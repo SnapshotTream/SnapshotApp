@@ -1,16 +1,14 @@
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 
-namespace Foxpict.Service.Extention.Sdk
-{
+namespace Snapshot.Server.Extention.Sdk {
     /// <summary>
     /// CategoryAPIの各処理を契機として呼び出される拡張機能のカットポイントインターフェースを定義する。
     /// </summary>
-    public interface ICategoryApiCutpoint : ICutpoint
-    {
+    public interface ICategoryApiCutpoint : ICutpoint {
         /// <summary>
         ///
         /// </summary>
         /// <param name="category"></param>
-         void OnGetCategory(ICategory category);
+        void OnGetCategory (ICategory category);
     }
 }

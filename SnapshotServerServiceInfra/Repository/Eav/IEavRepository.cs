@@ -1,7 +1,6 @@
 using System;
-using Foxpict.Service.Infra.Model.Eav;
+using Snapshot.Server.Service.Infra.Model.Eav;
 
-namespace Foxpict.Service.Infra.Repository
-{
+namespace Snapshot.Server.Service.Infra.Repository {
 
 }

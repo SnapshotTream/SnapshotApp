@@ -1,7 +1,5 @@
-namespace Foxpict.Service.Extention.Sdk
-{
-    public interface ICutpoint
-    {
+namespace Snapshot.Server.Extention.Sdk {
+    public interface ICutpoint {
 
     }
 }

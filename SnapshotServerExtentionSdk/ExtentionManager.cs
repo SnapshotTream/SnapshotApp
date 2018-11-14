@@ -2,15 +2,15 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Foxpict.Service.Infra;
-using Foxpict.Service.Infra.Extention;
-using Foxpict.Service.Infra.Model;
 using NLog;
 using SimpleInjector;
 using SimpleInjector.Advanced;
 using SimpleInjector.Lifestyles;
+using Snapshot.Server.Service.Infra;
+using Snapshot.Server.Service.Infra.Extention;
+using Snapshot.Server.Service.Infra.Model;
 
-namespace Foxpict.Service.Extention.Sdk {
+namespace Snapshot.Server.Extention.Sdk {
   /// <summary>
   /// 拡張機能の読み込みや操作するクラス
   /// </summary>

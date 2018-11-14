@@ -1,6 +1,6 @@
 using System;
 
-namespace Foxpict.Service.Infra.Model
+namespace Snapshot.Server.Service.Infra.Model
 {
     /// <summary>
     /// ラベル関連付与のトレースログデータ

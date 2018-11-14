@@ -3,18 +3,26 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Foxpict.Service.Core.Structure;
-using Foxpict.Service.Infra;
-using Foxpict.Service.Infra.Core;
-using Foxpict.Service.Infra.Core.Model.Messaging;
-using Foxpict.Service.Infra.Model;
-using Foxpict.Service.Infra.Repository;
-using Foxpict.Service.Infra.Utils;
 using NLog;
 using ProtoBuf;
+using Snapshot.Server.Service.Core.Service.Data;
+using Snapshot.Server.Service.Infra;
+using Snapshot.Server.Service.Infra.Core;
+using Snapshot.Server.Service.Infra.Core.Model.Messaging;
+using Snapshot.Server.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Repository;
+using Snapshot.Server.Service.Infra.Utils;
 
-namespace Foxpict.Service.Core.Vfs {
+namespace Snapshot.Server.Service.Core.Service {
+
+  /// <summary>
+  ///
+  /// </summary>
   public class FileUpdateRunner : IFileUpdateRunner {
+    /// <summary>
+    /// ロガー
+    /// </summary>
+    /// <returns></returns>
     static Logger LOG = LogManager.GetCurrentClassLogger ();
 
     public static readonly string MSG_NEWCATEGORY = "Foxpict.MSG_NEWCATEGORY";
@@ -59,11 +67,16 @@ namespace Foxpict.Service.Core.Vfs {
 
     /// <summary>
     /// コンストラクタ
-    /// </summary>
+    /// /// </summary>
     /// <param name="fileMappingInfoRepository"></param>
     /// <param name="categoryRepository"></param>
     /// <param name="contentRepository"></param>
     /// <param name="thumbnailBuilder"></param>
+    /// <param name="appAppMetaInfoRepository"></param>
+    /// <param name="labelRepository"></param>
+    /// <param name="messagingScopeContext"></param>
+    /// <param name="eventLogRepository"></param>
+    /// <param name="virtualFileSystemService"></param>
     public FileUpdateRunner (
       IFileMappingInfoRepository fileMappingInfoRepository,
       ICategoryRepository categoryRepository,

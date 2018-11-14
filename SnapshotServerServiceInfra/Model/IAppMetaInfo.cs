@@ -1,4 +1,4 @@
-namespace Foxpict.Service.Infra.Model
+namespace Snapshot.Server.Service.Infra.Model
 {
     public interface IAppMetaInfo
     {

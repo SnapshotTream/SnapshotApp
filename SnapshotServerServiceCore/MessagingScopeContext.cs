@@ -1,8 +1,8 @@
 using System.Collections.Concurrent;
-using Foxpict.Service.Infra;
-using static Foxpict.Service.Core.MessagingManager;
+using Snapshot.Server.Service.Infra;
+using static Snapshot.Server.Service.Core.Service.MessagingManager;
 
-namespace Foxpict.Service.Core {
+namespace Snapshot.Server.Service.Core.Service {
   public interface IMessagingScopeContext {
     /// <summary>
     /// メッセージを登録します

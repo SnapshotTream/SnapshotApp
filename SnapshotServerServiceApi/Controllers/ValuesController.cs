@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SnapshotServerServiceApi.Controllers
+namespace Snapshot.Server.Service.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -2,23 +2,23 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using Foxpict.Service.Infra.Core;
-using Foxpict.Service.Infra.Repository;
 using Microsoft.Extensions.Logging;
 using NLog;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Processing.Transforms;
+using Snapshot.Server.Service.Infra.Core;
+using Snapshot.Server.Service.Infra.Repository;
 using Snapshot.Share.Common.Attributes;
 using Snapshot.Share.Common.Types;
 using Snapshot.Share.Common.Utils;
 
-namespace Foxpict.Service.Core {
+namespace Snapshot.Server.Service.Core.Service {
   /// <summary>
-  /// サムネイル生成ロジッククラス
+  /// サムネイル生成サービス
   /// </summary>
-  public class ThumbnailBuilder : IThumbnailBuilder {
+  public class ThumbnailBuilderService : IThumbnailBuilder {
     private readonly Logger mLogger;
 
     private IThumbnailRepository thumbnailRepository;
@@ -26,40 +26,19 @@ namespace Foxpict.Service.Core {
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    /// <param name="thumbnailRepository"></param>
-    public ThumbnailBuilder (IThumbnailRepository thumbnailRepository) {
+    /// <param name="thumbnailRepository">サムネイル情報レポジトリ</param>
+    public ThumbnailBuilderService (IThumbnailRepository thumbnailRepository) {
       this.mLogger = LogManager.GetCurrentClassLogger ();
       this.thumbnailRepository = thumbnailRepository;
     }
 
-    private byte[] CreateImage (byte[] rawImage, int decodePixelWidth, int decodePixelHeight) {
-      using (Image<Rgba32> image = Image.Load (rawImage)) {
-        image.Mutate (x => x.Resize (decodePixelWidth, decodePixelHeight));
-        return image.SavePixelData ();
-      }
-    }
-
     /// <summary>
-    /// 任意のファイルのデータをバイナリ列で取得する
-    /// </summary>
-    /// <param name="filePath"></param>
-    /// <returns></returns>
-    private byte[] LoadImageBytes (string filePath) {
-      // チェックはしていないが、画像ファイル限定。
-      using (FileStream fs = new FileStream (filePath, FileMode.Open, FileAccess.Read))
-      using (BinaryReader br = new BinaryReader (fs)) {
-        byte[] imageBytes = br.ReadBytes ((int) fs.Length);
-        return imageBytes;
-      }
-    }
-
-    /// <summary>
-    /// サムネイル作成
+    /// サムネイルを作成します
     /// </summary>
     /// <param name="thumbnailhash">既存のサムネイルを、baseImageFilePathで生成しなおしたい場合、
     /// 既存のサムネイル情報を示すキーを指定します。それ以外は、NULLを指定します。</param>
     /// <param name="baseImageFilePath">サムネイル生成元の画像ファイルパス</param>
-    /// <returns></returns>
+    /// <returns>作成したサムネイルのキー</returns>
     public string BuildThumbnail (string thumbnailhash, string baseImageFilePath) {
       if (thumbnailhash != null)
         mLogger.Info ("サムネイル({ThumbnailHash})の作成を開始します", thumbnailhash);
@@ -97,17 +76,44 @@ namespace Foxpict.Service.Core {
       return _ThumbnailKey;
     }
 
+    /// <summary>
+    /// サムネイルを削除します
+    /// </summary>
+    /// <param name="thumbnailhash">削除するサムネイルのキー</param>
+    /// <returns>サムネイルの削除に成功した場合はTrue、それ以外はFalseを返します。</returns>
     public bool RemoveThumbnail (string thumbnailhash) {
       bool bResult = false;
-
       var thumbs = thumbnailRepository.FindByKey (thumbnailhash);
 
-      foreach (var prop in thumbs) {
-        thumbnailRepository.Delete (prop);
+      if (thumbs.Count () > 0) {
+        foreach (var prop in thumbs) {
+          thumbnailRepository.Delete (prop);
+        }
+        bResult = true;
       }
-      bResult = true;
 
       return bResult;
+    }
+
+    private byte[] CreateImage (byte[] rawImage, int decodePixelWidth, int decodePixelHeight) {
+      using (Image<Rgba32> image = Image.Load (rawImage)) {
+        image.Mutate (x => x.Resize (decodePixelWidth, decodePixelHeight));
+        return image.SavePixelData ();
+      }
+    }
+
+    /// <summary>
+    /// 任意のファイルのデータをバイナリ列で取得する
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <returns></returns>
+    private byte[] LoadImageBytes (string filePath) {
+      // チェックはしていないが、画像ファイル限定。
+      using (FileStream fs = new FileStream (filePath, FileMode.Open, FileAccess.Read))
+      using (BinaryReader br = new BinaryReader (fs)) {
+        byte[] imageBytes = br.ReadBytes ((int) fs.Length);
+        return imageBytes;
+      }
     }
 
     /// <summary>

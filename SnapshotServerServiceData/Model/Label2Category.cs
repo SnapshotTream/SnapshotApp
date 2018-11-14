@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 
-namespace Foxpict.Service.Model
+namespace Snapshot.Server.Service.Model
 {
     [Table("svp_P_Label2Category")]
     public class Label2Category

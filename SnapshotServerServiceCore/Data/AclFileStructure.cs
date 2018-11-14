@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using ProtoBuf;
 
-namespace Foxpict.Service.Core.Structure
+namespace Snapshot.Server.Service.Core.Service.Data
 {
     [ProtoContract]
     public class AclFileStructure

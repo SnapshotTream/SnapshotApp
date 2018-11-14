@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using Foxpict.Service.Infra.Model.Eav;
+using Snapshot.Server.Service.Infra.Model.Eav;
 using Hyperion.Pf.Entity;
 
-namespace Foxpict.Service.Model
+namespace Snapshot.Server.Service.Model
 {
 
     [Table("svp_Eav_Bool")]

@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Foxpict.Service.Core.Structure;
-using Foxpict.Service.Infra;
-using Foxpict.Service.Infra.Model;
-using Foxpict.Service.Infra.Repository;
-using Foxpict.Service.Infra.Utils;
+using Snapshot.Server.Service.Core.Service.Data;
+using Snapshot.Server.Service.Infra;
+using Snapshot.Server.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Repository;
+using Snapshot.Server.Service.Infra.Utils;
 using NLog;
 using ProtoBuf;
 
-namespace Foxpict.Service.Core.Service {
+namespace Snapshot.Server.Service.Core.Service.Service {
   public class VirtualFileSystemServiceImpl : IVirtualFileSystemService {
     private static Logger mLogger = LogManager.GetCurrentClassLogger ();
 

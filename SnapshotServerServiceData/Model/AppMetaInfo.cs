@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 
-namespace Foxpict.Service.Model
+namespace Snapshot.Server.Service.Model
 {
     [Table("svp_AppMetaInfo")]
     public class AppMetaInfo : IAppMetaInfo

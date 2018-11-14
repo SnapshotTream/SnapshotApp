@@ -4,10 +4,10 @@ using Hyperion.Pf.Entity;
 using Hyperion.Pf.Entity.Repository;
 using Microsoft.EntityFrameworkCore;
 using NLog;
-using Foxpict.Service.Infra.Model.Eav;
-using Foxpict.Service.Model;
+using Snapshot.Server.Service.Infra.Model.Eav;
+using Snapshot.Server.Service.Model;
 
-namespace Foxpict.Service.Gateway.Repository
+namespace Snapshot.Server.Service.Gateway.Repository
 {
 
     public abstract class PixstockAppRepositoryBase<T, INTERFACE> : GenericRepository<T>

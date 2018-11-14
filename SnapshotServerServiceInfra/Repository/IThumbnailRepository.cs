@@ -1,34 +1,32 @@
 using System.Linq;
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 
-namespace Foxpict.Service.Infra.Repository
-{
-    public interface IThumbnailRepository : IRepositoryBase
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        IThumbnail Load(long id);
+namespace Snapshot.Server.Service.Infra.Repository {
+  public interface IThumbnailRepository : IRepositoryBase {
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    IThumbnail Load (long id);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        IQueryable<IThumbnail> FindByKey(string key);
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="key"></param>
+    /// /// <returns></returns>
+    IQueryable<IThumbnail> FindByKey (string key);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="entity"></param>
-        void Delete(IThumbnail entity);
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="entity"></param>
+    void Delete (IThumbnail entity);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        IThumbnail New();
-    }
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    IThumbnail New ();
+  }
 }

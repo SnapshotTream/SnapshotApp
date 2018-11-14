@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Foxpict.Service.Infra.Model {
+namespace Snapshot.Server.Service.Infra.Model {
   public interface IWorkspace : Snapshot.Share.Common.Infra.Model.IWorkspace {
     /// <summary>
     /// 指定した文字列からワークスペースのパス部分を削除した文字列を返します。

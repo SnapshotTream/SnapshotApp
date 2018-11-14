@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 using Hyperion.Pf.Entity;
 using Newtonsoft.Json;
 
-namespace Foxpict.Service.Model {
+namespace Snapshot.Server.Service.Model {
   [Table ("svp_Label")]
-  public class Label : Infra.Model.ILabel, IAuditableEntity {
+  public class Label : Service.Infra.Model.ILabel, IAuditableEntity {
     [Key]
     public long Id { get; set; }
 

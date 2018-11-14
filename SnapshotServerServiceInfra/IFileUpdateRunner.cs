@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 
-namespace Foxpict.Service.Infra {
+namespace Snapshot.Server.Service.Infra {
   public interface IFileUpdateRunner {
     void file_create_acl (FileSystemInfo item, IWorkspace workspace);
     void file_create_normal (FileSystemInfo item, IWorkspace workspace);

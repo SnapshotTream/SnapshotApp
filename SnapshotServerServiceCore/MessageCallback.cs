@@ -1,11 +1,11 @@
-using Foxpict.Service.Gateway.Repository;
-using Foxpict.Service.Infra;
+using Snapshot.Server.Service.Gateway.Repository;
+using Snapshot.Server.Service.Infra;
 using Hyperion.Pf.Entity;
 using NLog;
 using SimpleInjector;
 using Snapshot.Share.Common.Utils;
 
-namespace Foxpict.Service.Core {
+namespace Snapshot.Server.Service.Core.Service {
   /// <summary>
   ///
   /// </summary>

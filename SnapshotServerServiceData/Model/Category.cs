@@ -3,16 +3,16 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 using Newtonsoft.Json;
 using Hyperion.Pf.Entity;
 using NLog;
 using Microsoft.EntityFrameworkCore;
 
-namespace Foxpict.Service.Model
+namespace Snapshot.Server.Service.Model
 {
     [Table("svp_Category")]
-    public class Category : Infra.Model.ICategory, IAuditableEntity, ISaveEntity
+    public class Category : Service.Infra.Model.ICategory, IAuditableEntity, ISaveEntity
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 

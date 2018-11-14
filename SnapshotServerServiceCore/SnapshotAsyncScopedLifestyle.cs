@@ -1,26 +1,26 @@
 using System;
-using Foxpict.Service.Infra;
+using Snapshot.Server.Service.Infra;
 using Microsoft.EntityFrameworkCore.Storage;
 using NLog;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 
-namespace Foxpict.Service.Core {
+namespace Snapshot.Server.Service.Core.Service {
   /// <summary>
-  /// Foxpict用のSimpleInjectionライフサイクル
+  /// アプリケーション用のSimpleInjectionライフサイクル
   /// </summary>
-  public class FoxpictAsyncScopedLifestyle {
-    public static FoxpictScope BeginScope (Container container) {
+  public class SnapshotAsyncScopedLifestyle {
+    public static SnapshotScope BeginScope (Container container) {
       var scope = AsyncScopedLifestyle.BeginScope (container);
 
       var appdbTransaction = scope.Container.GetInstance<IAppDbContext> ().BeginTransaction ();
       var thumbdbTransaction = scope.Container.GetInstance<IThumbnailDbContext> ().BeginTransaction ();
 
-      return new FoxpictScope (scope, appdbTransaction, thumbdbTransaction);
+      return new SnapshotScope (scope, appdbTransaction, thumbdbTransaction);
     }
   }
 
-  public class FoxpictScope : IDisposable {
+  public class SnapshotScope : IDisposable {
     private readonly Logger mLogger = LogManager.GetCurrentClassLogger ();
 
     readonly Scope mScope;
@@ -31,7 +31,7 @@ namespace Foxpict.Service.Core {
 
     bool isComplete;
 
-    internal FoxpictScope (Scope scope, IDbContextTransaction appDbTransaction, IDbContextTransaction thumbDbTransaction) {
+    internal SnapshotScope (Scope scope, IDbContextTransaction appDbTransaction, IDbContextTransaction thumbDbTransaction) {
       mScope = scope;
       mAppDbTransaction = appDbTransaction;
       mThumbDbTransaction = thumbDbTransaction;

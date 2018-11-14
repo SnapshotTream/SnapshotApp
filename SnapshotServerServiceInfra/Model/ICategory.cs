@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Foxpict.Service.Infra.Model
+namespace Snapshot.Server.Service.Infra.Model
 {
     /// <summary>
     ///

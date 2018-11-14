@@ -1,10 +1,10 @@
-<Project>
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netcoreapp2.1</TargetFramework>
     </PropertyGroup>
 
     <PropertyGroup>
-        <Lib_SimpleInjector>4.1.1</Lib_SimpleInjector>
+        <Lib_SimpleInjector>4.3.0</Lib_SimpleInjector>
     </PropertyGroup>
 
     <ItemGroup>

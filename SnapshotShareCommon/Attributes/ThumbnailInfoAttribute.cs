@@ -9,7 +9,7 @@ namespace Snapshot.Share.Common.Attributes {
     public String ThumbnailDirectoryName;
 
     /// <summary>
-    /// サムネイルのサイズ(横幅)
+    /// /// サムネイルのサイズ(横幅)
     /// </summary>
     /// <remarks>
     /// この値が「0」の場合、最大高さがHeightになるようにアスペクト比を維持しながら縮小する。

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 
-namespace Foxpict.Service.Infra.Repository {
+namespace Snapshot.Server.Service.Infra.Repository {
   public interface ILabelRepository : IRepositoryBase {
     ILabel New ();
 
@@ -10,7 +10,7 @@ namespace Foxpict.Service.Infra.Repository {
 
     /// <summary>
     /// ラベル名に一致するラベル情報を取得する
-    /// </summary>
+    /// /// </summary>
     /// <param name="name">正規化ラベル名</param>
     /// <returns></returns>
     ILabel LoadByName (string name);

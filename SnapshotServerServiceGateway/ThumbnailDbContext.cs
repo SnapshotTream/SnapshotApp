@@ -1,23 +1,23 @@
 using System.IO;
 using System.Text.RegularExpressions;
-using Foxpict.Service.Infra;
-using Foxpict.Service.Infra.Model;
-using Foxpict.Service.Model;
+using Snapshot.Server.Service.Infra;
+using Snapshot.Server.Service.Infra.Model;
+using Snapshot.Server.Service.Model;
 using Hyperion.Pf.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using NLog;
 
-namespace Foxpict.Service.Gateway {
+namespace Snapshot.Server.Service.Gateway {
   /// <summary>
-  /// サムネイル情報のデータベース
+  /// サムネイルの永続化データソースのコンテキスト
   /// </summary>
   public class ThumbnailDbContext : KatalibDbContext, IThumbnailDbContext {
     private static Logger mLogger = LogManager.GetCurrentClassLogger ();
 
     private readonly IAppSettings mAppSettings;
 
-    IApplicationContext context;
+    private IApplicationContext context;
 
     public DbSet<AppMetaInfo> AppMetaInfos { get; set; }
 
@@ -27,6 +27,7 @@ namespace Foxpict.Service.Gateway {
     /// コンストラクタ
     /// </summary>
     /// <param name="context"></param>
+    /// <param name="appSettings"></param>
     public ThumbnailDbContext (IApplicationContext context, IAppSettings appSettings) {
       this.context = context;
       this.mAppSettings = appSettings;

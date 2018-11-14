@@ -1,26 +1,20 @@
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 
-namespace Foxpict.Service.Extention.Sdk
-{
-    public class DefaultCutpoint : IInitPluginCutpoint, IStartCutpoint, ICategoryApiCutpoint, ICreateCategoryCutpoint
-    {
-        public void OnInitPlugin(object param)
-        {
+namespace Snapshot.Server.Extention.Sdk {
+    public class DefaultCutpoint : IInitPluginCutpoint, IStartCutpoint, ICategoryApiCutpoint, ICreateCategoryCutpoint {
+        public void OnInitPlugin (object param) {
 
         }
 
-        public void OnCreateCategory(ICategory category)
-        {
+        public void OnCreateCategory (ICategory category) {
 
         }
 
-        public void OnGetCategory(ICategory category)
-        {
+        public void OnGetCategory (ICategory category) {
 
         }
 
-        public void Process(object param)
-        {
+        public void Process (object param) {
 
         }
     }

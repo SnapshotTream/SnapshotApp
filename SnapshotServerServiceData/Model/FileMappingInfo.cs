@@ -1,13 +1,13 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 using Hyperion.Pf.Entity;
 using Newtonsoft.Json;
 
-namespace Foxpict.Service.Model
+namespace Snapshot.Server.Service.Model
 {
     [Table("svp_FileMappingInfo")]
-    public class FileMappingInfo : Infra.Model.IFileMappingInfo, IAuditableEntity
+    public class FileMappingInfo : Service.Infra.Model.IFileMappingInfo, IAuditableEntity
     {
         public long Id { get; set; }
 

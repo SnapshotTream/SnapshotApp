@@ -1,4 +1,4 @@
-namespace Foxpict.Service.Infra {
+namespace Snapshot.Server.Service.Infra {
   public interface IMessagingParameter {
 
   }

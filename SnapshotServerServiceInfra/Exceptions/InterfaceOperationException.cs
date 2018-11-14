@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Foxpict.Service.Infra.Exception
+namespace Snapshot.Server.Service.Infra.Exception
 {
     public class InterfaceOperationException : ApplicationException
     {

@@ -4,18 +4,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Foxpict.Service.Core.Structure;
-using Foxpict.Service.Core.Vfs;
-using Foxpict.Service.Infra;
-using Foxpict.Service.Infra.Model;
-using Foxpict.Service.Infra.Repository;
+using Snapshot.Server.Service.Core.Service.Data;
+using Snapshot.Server.Service.Infra;
+using Snapshot.Server.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Repository;
 using Microsoft.Extensions.Logging;
 using NLog;
 using ProtoBuf;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 
-namespace Foxpict.Service.Core.Service {
+namespace Snapshot.Server.Service.Core.Service.Service {
 
   /// <summary>
   /// 仮想ファイル監視マネージャ
@@ -270,7 +269,7 @@ namespace Foxpict.Service.Core.Service {
               mIgnoreUpdateFiles.Enqueue (vpath + ".aclgene"); // 仮想領域に作成するACLファイルを除外リストに追加
             }
 
-            using (var scope = FoxpictAsyncScopedLifestyle.BeginScope (container)) {
+            using (var scope = SnapshotAsyncScopedLifestyle.BeginScope (container)) {
               try {
                 var workspaceRepository = container.GetInstance<IWorkspaceRepository> ();
                 var workspace = workspaceRepository.Load (mWorkspace.Id);

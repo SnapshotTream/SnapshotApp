@@ -1,23 +1,21 @@
 using System;
 using System.Collections.Generic;
 
-namespace Foxpict.Service.Infra.Extention
-{
+namespace Snapshot.Server.Service.Infra.Extention {
+  /// <summary>
+  /// 拡張機能のエントリポイント
+  /// </summary>
+  public interface IExtentionMetaInfo {
     /// <summary>
-    /// 拡張機能のエントリポイント
+    /// 拡張機能名を取得します
     /// </summary>
-    public interface IExtentionMetaInfo
-    {
-        /// <summary>
-        /// 拡張機能名を取得します
-        /// </summary>
-        /// <returns></returns>
-        string Name { get; }
+    /// <returns></returns>
+    string Name { get; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        List<Type> Cutpoints();
-    }
+    /// <summary>
+    ///
+    /// </summary>
+    /// /// <returns></returns>
+    List<Type> Cutpoints ();
+  }
 }

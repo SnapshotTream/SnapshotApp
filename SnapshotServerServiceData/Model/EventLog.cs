@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Foxpict.Service.Model
+namespace Snapshot.Server.Service.Model
 {
     [Table("svp_EventLog")]
-    public class EventLog : Infra.Model.IEventLog
+    public class EventLog : Service.Infra.Model.IEventLog
     {
         public long Id { get; set; }
 

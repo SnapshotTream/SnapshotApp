@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Hyperion.Pf.Entity.Repository;
 using Microsoft.EntityFrameworkCore;
-using Foxpict.Service.Infra;
-using Foxpict.Service.Infra.Model;
-using Foxpict.Service.Infra.Repository;
-using Foxpict.Service.Model;
+using Snapshot.Server.Service.Infra;
+using Snapshot.Server.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Repository;
+using Snapshot.Server.Service.Model;
 
-namespace Foxpict.Service.Gateway.Repository
+namespace Snapshot.Server.Service.Gateway.Repository
 {
     public class FileMappingInfoRepository : PixstockAppRepositoryBase<FileMappingInfo, IFileMappingInfo>, IFileMappingInfoRepository
     {

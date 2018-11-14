@@ -1,12 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 using Snapshot.Share.Common.Types;
 
-namespace Foxpict.Service.Model
+namespace Snapshot.Server.Service.Model
 {
     [Table("svp_Thumbnail")]
-    public class Thumbnail : Infra.Model.IThumbnail
+    public class Thumbnail : Service.Infra.Model.IThumbnail
     {
         [Key]
         public long Id { get; set; }

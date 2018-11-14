@@ -4,25 +4,25 @@
 			"path": "."
 		},
 		{
-			"path": "D:\\Project\\Snapshot\\SnapshotServerServiceApi"
+			"path": "..\\SnapshotServerServiceApi"
 		},
 		{
-			"path": "D:\\Project\\Snapshot\\SnapshotServerServiceCore"
+			"path": "..\\SnapshotServerServiceCore"
 		},
 		{
-			"path": "D:\\Project\\Snapshot\\SnapshotServerServiceData"
+			"path": "..\\SnapshotServerServiceData"
 		},
 		{
-			"path": "D:\\Project\\Snapshot\\SnapshotServerServiceGateway"
+			"path": "..\\SnapshotServerServiceGateway"
 		},
 		{
-			"path": "D:\\Project\\Snapshot\\SnapshotServerServiceInfra"
+			"path": "..\\SnapshotServerServiceInfra"
 		},
 		{
-			"path": "D:\\Project\\Snapshot\\SnapshotShareCommon"
+			"path": "..\\SnapshotShareCommon"
 		},
 		{
-			"path": "D:\\Project\\Snapshot\\SnapshotServerExtentionSdk"
+			"path": "..\\SnapshotServerExtentionSdk"
 		}
 	],
 	"settings": {}

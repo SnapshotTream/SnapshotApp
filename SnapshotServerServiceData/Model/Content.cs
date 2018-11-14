@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 
-namespace Foxpict.Service.Model {
+namespace Snapshot.Server.Service.Model {
   [Table ("svp_Content")]
-  public class Content : Infra.Model.IContent {
+  public class Content : Service.Infra.Model.IContent {
     [Key]
     public long Id { get; set; }
 

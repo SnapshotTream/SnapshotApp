@@ -1,18 +1,22 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using Foxpict.Service.Extention.Sdk;
-using Foxpict.Service.Infra;
-using Foxpict.Service.Infra.Model;
-using Foxpict.Service.Model;
 using Hyperion.Pf.Entity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using NLog;
+using Snapshot.Server.Extention.Sdk;
+using Snapshot.Server.Service.Infra;
+using Snapshot.Server.Service.Infra.Model;
+using Snapshot.Server.Service.Model;
 
-namespace Foxpict.Service.Gateway {
+namespace Snapshot.Server.Service.Gateway {
+
+  /// <summary>
+  /// アプリケーションの永続化データソースのコンテキスト
+  /// </summary>
   public class AppDbContext : KatalibDbContext, IAppDbContext {
     private static Logger mLogger = LogManager.GetCurrentClassLogger ();
 
@@ -42,22 +46,34 @@ namespace Foxpict.Service.Gateway {
 
     public DbSet<EventLog> EventLogs { get; set; }
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="extentionManager"></param>
+    /// <param name="appSettings"></param>
     public AppDbContext (IApplicationContext context, ExtentionManager extentionManager, IAppSettings appSettings) {
       this.context = context;
       this.extentionManager = extentionManager;
       this.mAppSettings = appSettings;
     }
 
-    public IDbContextTransaction BeginTransaction() {
-      return this.Database.BeginTransaction();
+    public IDbContextTransaction BeginTransaction () {
+      return this.Database.BeginTransaction ();
     }
 
     protected IApplicationContext Context { get => context; }
 
     protected override void OnCreate (EntityEntry entry) {
-      // 各エンティティごとのCreateEntityカットポイントを呼び出します
-      if (entry.Entity is ICategory) {
-
+      // NOTE: 各エンティティごとのCreateEntityカットポイントを呼び出します
+      if (entry.Entity is IContent) {
+        // TODO: コンテント情報を新規登録する際の拡張機能を呼び出します
+      } else if (entry.Entity is ICategory) {
+        // TODO: カテゴリ情報を新規登録する際の拡張機能を呼び出します
+      } else if (entry.Entity is ILabel) {
+        // TODO: ラベル情報を新規登録する際の拡張機能を呼び出します
+      } else if (entry.Entity is IWorkspace) {
+        // TODO: ワークスペース情報を新規登録する際の拡張機能を呼び出します
       }
     }
 
@@ -109,7 +125,7 @@ namespace Foxpict.Service.Gateway {
     /// <summary>
     /// Heroku環境下でPostgreSQLを使用するか判定する
     /// </summary>
-    /// /// <returns>Herokuを使用する場合はTrueを返す</returns>
+    /// <returns>Herokuを使用する場合はTrueを返す</returns>
     private bool UsingHerokuPostgreSQLServerConnectionString (DbContextOptionsBuilder optionsBuilder) {
       if (!string.IsNullOrEmpty (this.mAppSettings.ENV_HEROKU_DATABASE_URL)) {
         MatchCollection results = Regex.Matches (this.mAppSettings.ENV_HEROKU_DATABASE_URL, @"postgres://(.+):(.+)@(.+):(\d+)\/(.+)");

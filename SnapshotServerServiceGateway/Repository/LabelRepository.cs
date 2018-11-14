@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Foxpict.Service.Infra;
-using Foxpict.Service.Infra.Model;
-using Foxpict.Service.Infra.Repository;
-using Foxpict.Service.Model;
+using Snapshot.Server.Service.Infra;
+using Snapshot.Server.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Repository;
+using Snapshot.Server.Service.Model;
 using Hyperion.Pf.Entity.Repository;
 using Microsoft.EntityFrameworkCore;
 using Snapshot.Share.Common.Utils;
 
-namespace Foxpict.Service.Gateway.Repository {
+namespace Snapshot.Server.Service.Gateway.Repository {
   public class LabelRepository : PixstockAppRepositoryBase<Label, ILabel>, ILabelRepository {
     public LabelRepository (IAppDbContext context) : base ((DbContext) context, "Label") {
 

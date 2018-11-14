@@ -1,7 +1,7 @@
 using System.IO;
-using Foxpict.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model;
 
-namespace Foxpict.Service.Infra {
+namespace Snapshot.Server.Service.Infra {
   /// <summary>
   /// 仮想ファイルを操作するサービス
   /// </summary>
@@ -20,7 +20,7 @@ namespace Foxpict.Service.Infra {
     /// <param name="file">対象ファイル（仮想領域内のファイルを指定します）</param>
     /// <param name="fileMappingInfo">対象ファイルのシステム管理情報</param>
     /// <returns></returns>
-    IFileMappingInfo RegisterFile (FileInfo file, IFileMappingInfo fileMappingInfo);
+    /// IFileMappingInfo RegisterFile (FileInfo file, IFileMappingInfo fileMappingInfo);
 
   }
 }

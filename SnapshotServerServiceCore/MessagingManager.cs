@@ -2,14 +2,14 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Foxpict.Service.Infra;
-using Foxpict.Service.Infra.Extention;
+using Snapshot.Server.Service.Infra;
+using Snapshot.Server.Service.Infra.Extention;
 using Hyperion.Pf.Entity;
 using NLog;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 
-namespace Foxpict.Service.Core {
+namespace Snapshot.Server.Service.Core.Service {
   /// <summary>
   /// メッセージングフレームワーク
   /// </summary>
@@ -98,7 +98,7 @@ namespace Foxpict.Service.Core {
         if (currentMessagingContext.mDispatcherList.TryDequeue (out item)) {
           string messageName = item.EventName;
           object param = item.Param;
-          using (var scope = FoxpictAsyncScopedLifestyle.BeginScope (mContainer)) {
+          using (var scope = SnapshotAsyncScopedLifestyle.BeginScope (mContainer)) {
             try {
               LinkedList<MessageQueueItem> queue;
               if (mSubscribeList.TryGetValue (messageName, out queue)) {

@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using Foxpict.Service.Infra;
-using Foxpict.Service.Infra.Model;
-using Foxpict.Service.Infra.Model.Eav;
-using Foxpict.Service.Infra.Repository;
-using Foxpict.Service.Model;
+using Snapshot.Server.Service.Infra;
+using Snapshot.Server.Service.Infra.Model;
+using Snapshot.Server.Service.Infra.Model.Eav;
+using Snapshot.Server.Service.Infra.Repository;
+using Snapshot.Server.Service.Model;
 using Hyperion.Pf.Entity.Repository;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NLog;
 
-namespace Foxpict.Service.Gateway.Repository {
+namespace Snapshot.Server.Service.Gateway.Repository {
   public class CategoryRepository : PixstockAppRepositoryBase<Category, ICategory>, ICategoryRepository {
     private readonly Logger mLogger;
 

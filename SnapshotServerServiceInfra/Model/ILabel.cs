@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Foxpict.Service.Infra.Model {
+namespace Snapshot.Server.Service.Infra.Model {
   public interface ILabel : Snapshot.Share.Common.Infra.Model.ILabel {
 
     void SetParentLabel (ILabel label);

@@ -1,6 +1,6 @@
 using System;
 
-namespace Foxpict.Service.Infra.Model
+namespace Snapshot.Server.Service.Infra.Model
 {
     public interface IFileMappingInfo : Snapshot.Share.Common.Infra.Model.IFileMappingInfo
     {

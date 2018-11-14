@@ -1,7 +1,5 @@
-namespace Foxpict.Service.Extention.Sdk
-{
-    public class CutpointStartParameter
-    {
+namespace Snapshot.Server.Extention.Sdk {
+    public class CutpointStartParameter {
         public long WorkspaceId { get; set; }
     }
 }

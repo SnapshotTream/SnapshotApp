@@ -1,6 +1,6 @@
 using System;
 
-namespace Foxpict.Service.Infra.Utils {
+namespace Snapshot.Server.Service.Infra.Utils {
   public static class VfsLogicUtils {
     /// <summary>
     /// 生成したACLハッシュを取得する

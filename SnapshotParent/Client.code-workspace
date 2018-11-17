@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "..\\SnapshotClientBffCore"
+		},
+		{
+			"path": "..\\SnapshotShareCommon"
+		},
+		{
+			"path": "..\\SnapshotClientBffSdk"
+		},
+		{
+			"path": "..\\SnapshotClientBffMock"
+		}
+	],
+	"settings": {}
+}

@@ -20,6 +20,10 @@ namespace Snapshot.Client.Bff.Mock.Data {
 
     }
 
+    /// <summary>
+    /// バックエンドサーバーアドレス
+    /// </summary>
+    /// <value></value>
     public string ServiceServerUrl { get; set; }
   }
 }

@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Snapshot.Client.Bff.Mock {
+  /// <summary>
+  /// メインプログラム
+  /// </summary>
   public class Program {
     /// <summary>
     /// MOCKサーバーのエントリーポイント
@@ -37,7 +40,7 @@ namespace Snapshot.Client.Bff.Mock {
       }
     }
 
-    public static IWebHost CreateWebHostBuilder (string[] args) =>
+    static IWebHost CreateWebHostBuilder (string[] args) =>
       WebHost.CreateDefaultBuilder (args)
       .ConfigureAppConfiguration ((hostingContext, config) => {
         var env = hostingContext.HostingEnvironment;

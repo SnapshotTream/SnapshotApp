@@ -24,18 +24,28 @@ using Snapshot.Client.Bff.Sdk.Dao;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Snapshot.Client.Bff.Mock {
+  /// <summary>
+  /// ASPNETスタートアップ
+  /// </summary>
   public class Startup {
     private Container mContainer = new Container ();
 
     private Logger mLogger = LogManager.GetCurrentClassLogger ();
 
+    private IConfiguration Configuration { get; }
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="configuration"></param>
     public Startup (IConfiguration configuration) {
       Configuration = configuration;
     }
 
-    public IConfiguration Configuration { get; }
-
-    // This method gets called by the runtime. Use this method to add services to the container.
+    /// <summary>
+    /// This method gets called by the runtime. Use this method to add services to the container.
+    /// </summary>
+    /// <param name="services"></param>
     public void ConfigureServices (IServiceCollection services) {
       services.AddMemoryCache ();
       services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_1);
@@ -55,7 +65,11 @@ namespace Snapshot.Client.Bff.Mock {
       IntegrateSimpleInjector (services);
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    /// <summary>
+    /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    /// </summary>
+    /// <param name="app"></param>
+    /// <param name="env"></param>
     public void Configure (IApplicationBuilder app, IHostingEnvironment env) {
       mLogger.Info ("Starting Mock");
 

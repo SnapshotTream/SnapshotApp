@@ -18,7 +18,7 @@ namespace Snapshot.Client.Bff.Dao {
       this.mLogger = LogManager.GetCurrentClassLogger ();
     }
 
-    public ICollection<Label> LoadLabel () {
+    public List<Label> LoadLabel () {
       var request = new RestRequest ("label", Method.GET);
       var response = mClient.Execute<ServerResponseApi<List<Label>>> (request);
       return response.Data.Value;
@@ -38,7 +38,7 @@ namespace Snapshot.Client.Bff.Dao {
       return label;
     }
 
-    public ICollection<Label> LoadRoot () {
+    public List<Label> LoadRoot () {
       var request = new RestRequest ("label/{id}/l/children/", Method.GET);
       request.AddUrlSegment ("id", 0);
       var response = mClient.Execute<ServerResponseApi<List<Label>>> (request);
@@ -46,15 +46,12 @@ namespace Snapshot.Client.Bff.Dao {
       return response.Data.Value;
     }
 
-    public ICollection<Category> LoadLabelLinkCategory (string query, int offset, int limit) {
+    public List<Category> LoadLabelLinkCategory (string query, int offset, int limit) {
       var request = new RestRequest ("label/{query}/category", Method.GET);
       request.AddUrlSegment ("query", query);
       //request.AddQueryParameter("offset", offset.ToString()); 実装したら使用する
 
-      //_logger.Info("Execute Request");
       var response = mClient.Execute<ServerResponseApi<List<Category>>> (request);
-
-      //_logger.Info("Execute Respose");
       return response.Data.Value;
     }
 

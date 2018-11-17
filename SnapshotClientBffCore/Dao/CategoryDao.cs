@@ -33,6 +33,7 @@ namespace Snapshot.Client.Bff.Dao {
 
         var response = mClient.Execute<ServerResponseApi<Category>> (request);
         if (!response.IsSuccessful) {
+          mLogger.Error ("サーバーAPIの実行に失敗しました。{0}", response.ErrorMessage);
           return null;
         }
 
@@ -46,11 +47,6 @@ namespace Snapshot.Client.Bff.Dao {
       return new Category ();
     }
 
-    /// <summary>
-    /// 親カテゴリ情報を取得する
-    /// </summary>
-    /// <param name="categoryId"></param>
-    /// <returns></returns>
     public Category LoadParentCategory (long categoryId) {
       var request = new RestRequest ("category/{id}/pc", Method.GET);
       request.AddUrlSegment ("id", categoryId);

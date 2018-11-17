@@ -20,7 +20,7 @@ namespace Snapshot.Server.Service.Infra {
     /// <param name="file">対象ファイル（仮想領域内のファイルを指定します）</param>
     /// <param name="fileMappingInfo">対象ファイルのシステム管理情報</param>
     /// <returns></returns>
-    /// IFileMappingInfo RegisterFile (FileInfo file, IFileMappingInfo fileMappingInfo);
+    IFileMappingInfo RegisterFile (FileInfo file, IFileMappingInfo fileMappingInfo);
 
   }
 }

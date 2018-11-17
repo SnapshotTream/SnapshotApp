@@ -1,9 +1,6 @@
 {
 	"folders": [
 		{
-			"path": "."
-		},
-		{
 			"path": "..\\SnapshotServerServiceApi"
 		},
 		{
@@ -23,6 +20,9 @@
 		},
 		{
 			"path": "..\\SnapshotServerExtentionSdk"
+		},
+		{
+			"path": "..\\SnapshotServerServiceSdk"
 		}
 	],
 	"settings": {}

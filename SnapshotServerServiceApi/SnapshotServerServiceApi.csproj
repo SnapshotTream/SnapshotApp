@@ -43,6 +43,8 @@
     <ProjectReference Include="..\SnapshotServerServiceData\SnapshotServerServiceData.csproj" />
     <ProjectReference Include="..\SnapshotServerServiceCore\SnapshotServerServiceCore.csproj" />
     <ProjectReference Include="..\SnapshotServerServiceGateway\SnapshotServerServiceGateway.csproj" />
+    <ProjectReference Include="..\SnapshotServerServiceSdk\SnapshotServerServiceSdk.csproj" />
+    <ProjectReference Include="..\SnapshotServerExtentionSdk\SnapshotServerExtentionSdk.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -14,7 +14,7 @@ namespace Snapshot.Client.Bff.Sdk.Dao {
     Category LoadCategory (long categoryId, int offsetSubCategory = 0, int limitSubCategory = 100000, int offsetContent = 0);
 
     /// <summary>
-    /// カテゴリ情報を読み込みます
+    /// 親カテゴリ情報を取得する
     /// </summary>
     /// <param name="categoryId"></param>
     /// <returns></returns>

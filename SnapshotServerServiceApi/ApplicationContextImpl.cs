@@ -89,6 +89,9 @@ namespace Foxpict.Service.Web {
           _AssemblyParameter.Params["ApplicationDirectoryPath"]);
       }
 
+      // NLogが出力するログファイルを、アプリケーションディレクトリに設定します。
+      mLogger.Factory.Configuration.Variables.Add ("outputPath", _ApplicationDirectoryPath);
+
       this.ApplicationFileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo (System.Reflection.Assembly.GetExecutingAssembly ().Location);
       mLogger.Info ("_ApplicationDirectoryPath = " + _ApplicationDirectoryPath);
     }
@@ -131,8 +134,8 @@ namespace Foxpict.Service.Web {
 
       // 拡張機能
       var extentionManager = new ExtentionManager (container);
-      //extentionManager.AddPlugin (typeof (InitializeBuildExtention)); // 開発中は常に拡張機能を読み込む
-      //extentionManager.AddPlugin (typeof (WebScribeExtention)); // 開発中は常に拡張機能を読み込む
+      extentionManager.AddPlugin (typeof (Snapshot.Server.Extention.Initialize.InitializeBuildExtention)); // 開発中は常に拡張機能を読み込む
+      extentionManager.AddPlugin (typeof (Snapshot.Server.Extention.Webscribe.WebScribeExtention)); // 開発中は常に拡張機能を読み込む
       container.RegisterInstance<ExtentionManager> (extentionManager);
       extentionManager.InitializePlugin (ExtentionDirectoryPath);
       extentionManager.CompletePlugin ();

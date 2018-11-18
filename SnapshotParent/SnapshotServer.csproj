@@ -4,6 +4,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
+        <Lib_NLog>4.5.10</Lib_NLog>
         <Lib_SimpleInjector>4.3.0</Lib_SimpleInjector>
         <Lib_NewtonsoftJson>11.0.2</Lib_NewtonsoftJson>
     </PropertyGroup>

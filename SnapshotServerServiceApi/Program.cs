@@ -9,6 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Snapshot.Server.Service.Api {
+  /// <summary>
+  /// プログラムのエントリポイント
+  /// </summary>
   public class Program {
     /// <summary>
     /// Defines the entry point of the application.

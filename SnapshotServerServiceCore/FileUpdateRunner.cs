@@ -36,6 +36,9 @@ namespace Snapshot.Server.Service.Core.Service {
 
     public static readonly string CategoryLabelNameParserPropertyKey = "InitializeBuildCategoryLabelNameParser";
 
+    /// <summary>
+    /// カテゴリ名をパースするかどうかのフラグ
+    /// </summary>
     bool mEnableCategoryParse;
 
     readonly IAppAppMetaInfoRepository mAppAppMetaInfoRepository;
@@ -233,8 +236,8 @@ namespace Snapshot.Server.Service.Core.Service {
     private IContent UpdateContentFromFileMapping (IFileMappingInfo fileMappingInfo) {
       // FileMappingInfoがContentとの関連が存在する場合、
       // 新規のContentは作成できないので例外を投げる。
-      if (fileMappingInfo.Id != 0L) {
-        if (mContentRepository.Load (fileMappingInfo) != null) throw new ApplicationException ("既にコンテント情報が作成済みのFileMappingInfoです。");
+      if (fileMappingInfo.Id != 0L && mContentRepository.Load (fileMappingInfo) != null) {
+        throw new ApplicationException ("既にコンテント情報が作成済みのFileMappingInfoです。");
       }
 
       //---
@@ -258,18 +261,18 @@ namespace Snapshot.Server.Service.Core.Service {
       // Windows環境: Path.DirectorySeparatorChar
       // Unix環境: Path.AltDirectorySeparatorChar
       var pathSplitedList = new Stack<string> (pathText.Split (Path.DirectorySeparatorChar, StringSplitOptions.None));
-      var fileName = pathSplitedList.Pop (); // 最後の要素は、必ずファイル名となる
-      var directoryTreeNames = new Queue<string> (pathSplitedList.Reverse<string> ());
-      var appcat = GenerateHierarchyCategory (directoryTreeNames);
-      var entity = mContentRepository.New ();
-      entity.Name = fileName;
-      entity.SetFileMappingInfo (fileMappingInfo);
-      entity.SetCategory (appcat);
+      var fileName = pathSplitedList.Pop (); // 最後の要素は必ずファイル名となるため、最後の要素を取り出す。
+      var category = GenerateHierarchyCategory (new Queue<string> (pathSplitedList.Reverse<string> ()));
 
-      return entity;
-      // --------------------
-      // ここまで
-      // --------------------
+      // コンテントを格納するカテゴリのため、アルバムとしてマークする。
+      category.AlbumFlag = true;
+
+      var content = mContentRepository.New ();
+      content.Name = fileName;
+      content.SetFileMappingInfo (fileMappingInfo);
+      content.SetCategory (category);
+
+      return content;
     }
 
     /// <summary>
@@ -278,7 +281,7 @@ namespace Snapshot.Server.Service.Core.Service {
     /// </summary>
     /// <param name="parentCategory"></param>
     /// <param name="categoryName">検索カテゴリ名。または、新規登録時のカテゴリ名。</param>
-    /// <param name="createdFlag">カテゴリを新規登録したかどうかを出力します。</param>
+    /// <param name="createdFlag">カテゴリを新規作成した場合Trueを設定します。</param>
     /// <returns>カテゴリ情報</returns>
     private ICategory CreateOrSelectCategory (ICategory parentCategory, string categoryName, out bool createdFlag) {
       ICategory category = null;
@@ -314,18 +317,17 @@ namespace Snapshot.Server.Service.Core.Service {
     /// <summary>
     /// サムネイルを生成します。
     /// </summary>
-    /// <param name="content"></param>
-    /// <param name="workspace"></param>
+    /// <param name="content">コンテント情報</param>
+    /// <param name="workspace">ワークスペース</param>
     private void GenerateArtifact (IContent content, IWorkspace workspace) {
-      var fullpath = System.IO.Path.Combine (workspace.PhysicalPath, content.GetFileMappingInfo ().MappingFilePath);
-      if (string.IsNullOrEmpty (content.ThumbnailKey)) {
-        // サムネイル新規作成
-        var thumbnailKey = mTumbnailBuilder.BuildThumbnail (null, fullpath);
-        content.ThumbnailKey = thumbnailKey;
-      } else {
-        // サムネイルリビルド
-        mTumbnailBuilder.BuildThumbnail (content.ThumbnailKey, fullpath);
+      var sourceFileFullPath = System.IO.Path.Combine (workspace.PhysicalPath, content.GetFileMappingInfo ().MappingFilePath);
+
+      string thumbnailHashKey = null;
+      if (!string.IsNullOrEmpty (content.ThumbnailKey)) {
+        thumbnailHashKey = content.ThumbnailKey;
       }
+
+      content.ThumbnailKey = mTumbnailBuilder.BuildThumbnail (thumbnailHashKey, sourceFileFullPath);
     }
 
     /// <summary>
@@ -336,8 +338,11 @@ namespace Snapshot.Server.Service.Core.Service {
     private ICategory GenerateHierarchyCategory (Queue<string> directoryTreeNames) {
       // パスから取得したトークン文字列と一致するカテゴリを取得します。
       // 該当のカテゴリが存在しない場合はカテゴリ情報を新規登録する。
-      var appcat = mCategoryRepository.LoadRootCategory ();
-      if (appcat == null) throw new ApplicationException ("ルートカテゴリが見つかりません");
+      var loopCategory = mCategoryRepository.LoadRootCategory ();
+      if (loopCategory == null) throw new ApplicationException ("ルートカテゴリが見つかりません");
+
+      // キューから１つずつ要素を取得しエンティティの作成を行う。
+      // 直前に作成したカテゴリ情報は、次の要素の親カテゴリに設定する。
       while (directoryTreeNames.Count > 0) {
         var oneText = directoryTreeNames.Dequeue ();
         bool parseSuccessFlag = false;
@@ -348,21 +353,21 @@ namespace Snapshot.Server.Service.Core.Service {
         }
 
         bool categoryCreatedFlag = false;
-        appcat = CreateOrSelectCategory (appcat, parsedCategoryName, out categoryCreatedFlag);
+        loopCategory = CreateOrSelectCategory (loopCategory, parsedCategoryName, out categoryCreatedFlag);
 
         if (categoryCreatedFlag && parseSuccessFlag) {
-          LOG.Info ($"{MSG_NEWCATEGORY}メッセージを配信します。 CategoryId={appcat.Id}");
+          LOG.Info ($"{MSG_NEWCATEGORY}メッセージを配信します。 CategoryId={loopCategory.Id}");
           mMessagingScopeContext.Dispatcher (MSG_NEWCATEGORY, new NewCategoryMessageParameter {
-            CategoryId = appcat.Id,
+            CategoryId = loopCategory.Id,
               EnableCategoryParse = mEnableCategoryParse
           });
         }
         if (mEnableCategoryParse) {
-          AttachParsedLabel (oneText, appcat);
+          AttachParsedLabel (oneText, loopCategory);
         }
       }
 
-      return appcat;
+      return loopCategory;
     }
 
     /// <summary>

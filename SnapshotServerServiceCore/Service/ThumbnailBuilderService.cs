@@ -38,7 +38,7 @@ namespace Snapshot.Server.Service.Core.Service {
     /// <param name="thumbnailhash">既存のサムネイルを、baseImageFilePathで生成しなおしたい場合、
     /// 既存のサムネイル情報を示すキーを指定します。それ以外は、NULLを指定します。</param>
     /// <param name="baseImageFilePath">サムネイル生成元の画像ファイルパス</param>
-    /// <returns>作成したサムネイルのキー</returns>
+    /// <returns>ハッシュキー</returns>
     public string BuildThumbnail (string thumbnailhash, string baseImageFilePath) {
       if (thumbnailhash != null)
         mLogger.Info ("サムネイル({ThumbnailHash})の作成を開始します", thumbnailhash);

@@ -34,20 +34,15 @@ namespace Snapshot.Server.Service.Apo.Builder {
     }
 
     /// <summary>
-    ///
+    /// 適切な関連データを設定したAPIレスポンスデータを返します。
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="category"></param>
     /// <param name="out_response"></param>
-    public void AttachCategoryEntity (long id, ResponseAapi<ICategory> out_response) {
-      var category = mCategoryRepository.Load (id);
-      if (category != null) {
-        out_response.Value = category;
+    public void AttachCategoryEntity (ICategory category, ResponseAapi<ICategory> out_response) {
+      out_response.Value = category;
 
-        // 関連データ設定
-        out_response.Rel.Add ("labels", JsonConvert.SerializeObject (category.GetLabelList ()));
-      } else {
-        throw new InterfaceOperationException ("カテゴリが見つかりません");
-      }
+      // 関連データ設定
+      out_response.Rel.Add ("labels", JsonConvert.SerializeObject (category.GetLabelList ()));
     }
 
     /// <summary>
@@ -56,6 +51,7 @@ namespace Snapshot.Server.Service.Apo.Builder {
     /// <param name="id"></param>
     /// <param name="out_respponse"></param>
     public void AttachContentEntity (long id, ResponseAapi<IContent> out_respponse) {
+      // TODO: idパラメータの型をContentエンティティに変更するべき
       var content = mContentRepository.Load (id);
       if (content != null) {
         out_respponse.Value = content;
@@ -70,6 +66,7 @@ namespace Snapshot.Server.Service.Apo.Builder {
     /// <param name="id"></param>
     /// <param name="out_response"></param>
     public void AttachLabelEntity (long id, ResponseAapi<ILabel> out_response) {
+      // TODO: idパラメータの型をLabelエンティティに変更するべき
       var label = mLabelRepository.Load (id);
       if (label != null) {
         out_response.Value = label;

@@ -17,5 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SnapshotClientBffSdk\SnapshotClientBffSdk.csproj" />
+    <ProjectReference Include="..\SnapshotServerServiceSdk\SnapshotServerServiceSdk.csproj" />
   </ItemGroup>
 </Project>

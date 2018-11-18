@@ -22,6 +22,8 @@ namespace Foxpict.Service.Web.Controllers {
 
     readonly ApiResponseBuilder mBuilder;
 
+    private readonly ICategoryRepository mCategoryRepository;
+
     readonly ILabelRepository mLabelRepository;
 
     /// <summary>
@@ -29,8 +31,11 @@ namespace Foxpict.Service.Web.Controllers {
     /// </summary>
     /// <param name="builder"></param>
     /// <param name="labelRepository"></param>
-    public LabelController (ApiResponseBuilder builder, ILabelRepository labelRepository) {
+    public LabelController (ApiResponseBuilder builder,
+      ICategoryRepository categoryRepository,
+      ILabelRepository labelRepository) {
       this.mBuilder = builder;
+      this.mCategoryRepository = categoryRepository;
       this.mLabelRepository = labelRepository;
     }
 
@@ -167,7 +172,8 @@ namespace Foxpict.Service.Web.Controllers {
 
       var linkedCategory = this.mLabelRepository.FindChildren (id).Where (prop => prop.Id == link_id).SingleOrDefault ();
       if (linkedCategory != null) {
-        mBuilder.AttachCategoryEntity (link_id, response);
+        var category = mCategoryRepository.Load(link_id);
+        mBuilder.AttachCategoryEntity (category, response);
 
         var sub = this.mLabelRepository.FindChildren (linkedCategory.Id).FirstOrDefault ();
         if (sub != null) {

@@ -20,6 +20,8 @@ namespace Foxpict.Service.Web.Controllers {
 
     readonly ApiResponseBuilder mBuilder;
 
+    readonly ICategoryRepository mCategoryRepository;
+
     readonly IContentRepository mContentRepository;
 
     readonly IFileMappingInfoRepository mFileMappingInfoRepository;
@@ -32,10 +34,12 @@ namespace Foxpict.Service.Web.Controllers {
     /// <param name="fileMappingInfoRepository"></param>
     public ArtifactController (
       ApiResponseBuilder builder,
+      ICategoryRepository categoryRepository,
       IContentRepository contentRepository,
       IFileMappingInfoRepository fileMappingInfoRepository
     ) {
       this.mBuilder = builder;
+      this.mCategoryRepository = categoryRepository;
       this.mContentRepository = contentRepository;
       this.mFileMappingInfoRepository = fileMappingInfoRepository;
     }
@@ -76,7 +80,7 @@ namespace Foxpict.Service.Web.Controllers {
       var response = new ResponseAapi<ICategory> ();
       try {
         var content = mContentRepository.Load (id);
-        mBuilder.AttachCategoryEntity (content.GetCategory ().Id, response);
+        mBuilder.AttachCategoryEntity (content.GetCategory (), response);
       } catch (Exception expr) {
         _logger.Error (expr.Message);
         throw new InterfaceOperationException ();

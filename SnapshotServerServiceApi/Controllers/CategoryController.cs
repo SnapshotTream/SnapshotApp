@@ -12,6 +12,7 @@ using Snapshot.Server.Service.Infra.Model;
 using Snapshot.Server.Service.Infra.Repository;
 using Snapshot.Server.Service.Model;
 using Snapshot.Server.Service.Sdk.Data;
+using Snapshot.Share.Common.Collections;
 
 namespace Foxpict.Service.Web.Controllers {
   /// <summary>
@@ -47,6 +48,44 @@ namespace Foxpict.Service.Web.Controllers {
     }
 
     /// <summary>
+    /// カテゴリのアートワークを設定します。
+    /// </summary>
+    /// <param name="category_id">カテゴリID</param>
+    /// <param name="queryParam">クエリーパラメータ</param>
+    /// <returns></returns>
+    [HttpPatch ("{category_id}/thumbnail")]
+    [ProducesResponseType (200)]
+    public ActionResult<ResponseAapi<ICategory>> UpdateCategoryArtwork (long category_id, [FromQuery] UpdateCategoryArtworkParam queryParam) {
+      if (queryParam == null) {
+        throw new ApplicationException ("クエリーパラメータは必須です。");
+      }
+
+      var category = mCategoryRepository.Load (category_id);
+      if (queryParam.Mode == ModeType.AUTO_CONTENT) {
+        if (category.GetContentList ().Count > 0) {
+          // コンテントのNameを自然順に並び替えて、最初の要素からアートワーク用のサムネイル画像を取得する。
+
+          var contentList = category.GetContentList ().ToArray ();
+          Array.Sort (contentList, new ContentNaturalComparer ());
+
+          var content = contentList[0];
+          if (!string.IsNullOrEmpty (content.ThumbnailKey)) {
+            category.ArtworkThumbnailKey = content.ThumbnailKey;
+            mCategoryRepository.Save ();
+          } else {
+            mLogger.Warn ("コンテント(ID:{0})にサムネイルキーが設定されていないため、カテゴリにアートワークを設定できませんでした。", content.Id);
+          }
+        }
+      } else {
+        mLogger.Warn ("不明なモード({0})のため、アートワークの設定を行いませんでした。", queryParam.Mode);
+      }
+
+      var response = new ResponseAapi<ICategory> ();
+      mBuilder.AttachCategoryEntity (category, response);
+      return response;
+    }
+
+    /// <summary>
     /// 任意のカテゴリを取得します
     /// </summary>
     /// <param name="id"></param>
@@ -56,8 +95,8 @@ namespace Foxpict.Service.Web.Controllers {
     public ActionResult<ResponseAapi<ICategory>> GetCategory (int id, [FromQuery] CategoryParam param) {
       var response = new ResponseAapi<ICategory> ();
 
-      mBuilder.AttachCategoryEntity (id, response);
-      var category = response.Value;
+      var category = mCategoryRepository.Load (id);
+      mBuilder.AttachCategoryEntity (category, response);
 
       // リンクデータの生成
       // "la"
@@ -173,7 +212,8 @@ namespace Foxpict.Service.Web.Controllers {
 
       var linkedCategory = this.mCategoryRepository.FindChildren (id).Where (prop => prop.Id == link_id).SingleOrDefault ();
       if (linkedCategory != null) {
-        mBuilder.AttachCategoryEntity (link_id, response);
+        var linkCategory = mCategoryRepository.Load (link_id);
+        mBuilder.AttachCategoryEntity (linkCategory, response);
 
         var sub = this.mCategoryRepository.FindChildren (linkedCategory).FirstOrDefault ();
         if (sub != null) {
@@ -359,5 +399,25 @@ namespace Foxpict.Service.Web.Controllers {
       return categoryList;
     }
 
+  }
+
+  /// <summary>
+  /// コンテント情報のNameプロパティを使用した比較を行う
+  /// </summary>
+  public class ContentNaturalComparer : NaturalComparer, IComparer<IContent> {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public ContentNaturalComparer () { }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    public int Compare (IContent x, IContent y) {
+      return base.Compare (x.Name, y.Name);
+    }
   }
 }

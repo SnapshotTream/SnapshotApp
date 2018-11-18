@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using Snapshot.Client.Bff.Mock.Data;
 using Snapshot.Client.Bff.Sdk;
 using Snapshot.Client.Bff.Sdk.Dao;
 using Snapshot.Client.Bff.Sdk.Data;
@@ -17,6 +18,8 @@ namespace Snapshot.Client.Bff.Mock.Controllers {
 
     static readonly Logger LOGGER = LogManager.GetCurrentClassLogger ();
 
+    readonly DaoContext mDaoContext;
+
     readonly ICategoryDao mCategoryDao;
 
     readonly IContentDao mContentDao;
@@ -26,8 +29,10 @@ namespace Snapshot.Client.Bff.Mock.Controllers {
     /// </summary>
     /// <param name="categoryDao"></param>
     public CategoryController (
+      DaoContext daoContext,
       ICategoryDao categoryDao,
       IContentDao contentDao) {
+      this.mDaoContext = daoContext;
       this.mCategoryDao = categoryDao;
       this.mContentDao = contentDao;
     }
@@ -42,6 +47,22 @@ namespace Snapshot.Client.Bff.Mock.Controllers {
       LOGGER.Trace ("IN");
       var result = new BffResponseApi<Category> ();
       result.Value = mCategoryDao.LoadCategory (categoryId);
+      LOGGER.Trace ("OUT");
+      return result;
+    }
+
+    /// <summary>
+    /// カテゴリのアートワークを設定します。
+    /// </summary>
+    /// <param name="categoryId"></param>
+    /// <returns></returns>
+    [HttpPut ("category/{categoryId}/thumbnail")]
+    public ActionResult<BffResponseApi<Category>> UpdateCategoryArtwork (long categoryId) {
+      LOGGER.Trace ("IN");
+      var categopry = mCategoryDao.UpdateCategoryArtwork (categoryId);
+
+      var result = new BffResponseApi<Category> ();
+      result.Value = categopry;
       LOGGER.Trace ("OUT");
       return result;
     }
@@ -117,7 +138,7 @@ namespace Snapshot.Client.Bff.Mock.Controllers {
 
       var content = category.LinkContentList[position - 1];
       mContentDao.UpdateRead (content.Id);
-      result.Value = mContentDao.LoadContent(content.Id);
+      result.Value = mContentDao.LoadContent (content.Id);
       LOGGER.Trace ("OUT");
       return result;
     }

@@ -27,5 +27,12 @@ namespace Snapshot.Client.Bff.Sdk.Dao {
     /// <param name="labelId">条件にラベル(AND)を含めます。nullの場合は、条件に含めません。</param>
     /// <returns></returns>
     List<Category> FindCategory (bool? albumCategory, long[] labelId);
+
+    /// <summary>
+    /// カテゴリのアートワークを自動設定します。
+    /// </summary>
+    /// <param name="categoryId"></param>
+    /// <returns></returns>
+    Category UpdateCategoryArtwork (long categoryId);
   }
 }

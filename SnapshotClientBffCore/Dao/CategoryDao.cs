@@ -8,6 +8,7 @@ using Snapshot.Client.Bff.Mock.Data;
 using Snapshot.Client.Bff.Sdk;
 using Snapshot.Client.Bff.Sdk.Dao;
 using Snapshot.Client.Bff.Sdk.Data.Dto;
+using Snapshot.Server.Service.Sdk.Data;
 using Snapshot.Share.Common.Infra.Translate;
 
 namespace Snapshot.Client.Bff.Dao {
@@ -56,6 +57,21 @@ namespace Snapshot.Client.Bff.Dao {
       }
 
       return response.Data.Value.FirstOrDefault ();
+    }
+
+    public Category UpdateCategoryArtwork (long categoryId) {
+      var request = new RestRequest ("category/{id}/thumbnail", Method.PATCH);
+      request.AddUrlSegment ("id", categoryId);
+      request.AddQueryParameter ("mode", ModeType.AUTO_CONTENT.ToString ());
+
+      var response = mClient.Execute<ServerResponseApi<Category>> (request);
+      if (!response.IsSuccessful) {
+        return null;
+      }
+
+      ApplyCategoryArtworkUrl (response.Data.Value);
+
+      return response.Data.Value;
     }
 
     private List<Content> LinkGetContentList (long categoryId, long offset, IRestResponse<ServerResponseApi<Category>> response) {
@@ -168,7 +184,14 @@ namespace Snapshot.Client.Bff.Dao {
       if (!response.IsSuccessful)
         throw new ApplicationException ("DAOの実行に失敗しました");
 
+      response.Data.Value.ForEach (prop => ApplyCategoryArtworkUrl (prop));
+
       return response.Data.Value;
     }
+    private void ApplyCategoryArtworkUrl (Category category) {
+      if (!string.IsNullOrEmpty (category.ArtworkThumbnailKey))
+        category.ThumbnailImageSrcUrl = mDaoContext.ServerUrl + "/thumbnail/" + category.ArtworkThumbnailKey;
+    }
+
   }
 }

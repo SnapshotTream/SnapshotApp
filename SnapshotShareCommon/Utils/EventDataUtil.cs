@@ -13,7 +13,7 @@ namespace Snapshot.Share.Common.Utils {
     /// <returns></returns>
     public static PreviewInfo FromPreviewJson (IEventLog eventlog) {
       // Guard
-      if (eventlog.EventType != "Preview-JSON") {
+      if (eventlog.ValueFormat != "Preview-JSON") {
         throw new NotSupportException ();
       }
 
@@ -24,7 +24,7 @@ namespace Snapshot.Share.Common.Utils {
 
     public static CreateEntityInfo FromCreateEntityJson (IEventLog eventlog) {
       // Guard
-      if (eventlog.EventType != "CreateEntity-JSON") {
+      if (eventlog.ValueFormat != "CreateEntity-JSON") {
         throw new NotSupportException ();
       }
 
@@ -39,9 +39,9 @@ namespace Snapshot.Share.Common.Utils {
     /// <param name="target"></param>
     /// <param name="valueObject"></param>
     public static void ToValue (IEventLog target, object valueObject) {
-      if (target.EventType == "Preview-JSON") {
+      if (target.ValueFormat == "Preview-JSON") {
         target.Value = JsonConvert.SerializeObject ((PreviewInfo) valueObject);
-      } else if (target.EventType == "CreateEntity-JSON") {
+      } else if (target.ValueFormat == "CreateEntity-JSON") {
         target.Value = JsonConvert.SerializeObject ((CreateEntityInfo) valueObject);
       } else {
         throw new NotSupportException ();

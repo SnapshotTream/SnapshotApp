@@ -12,6 +12,8 @@ using Snapshot.Server.Service.Infra.Core.Model.Messaging;
 using Snapshot.Server.Service.Infra.Model;
 using Snapshot.Server.Service.Infra.Repository;
 using Snapshot.Server.Service.Infra.Utils;
+using Snapshot.Share.Common.Infra.Data.EventData;
+using Snapshot.Share.Common.Utils;
 
 namespace Snapshot.Server.Service.Core.Service {
 
@@ -300,10 +302,10 @@ namespace Snapshot.Server.Service.Core.Service {
 
         // EventLog登録
         var eventLog = mEventLogRepository.New ();
-        eventLog.Message = string.Format ("カテゴリ({0})を新規登録しました", categoryName);
-        eventLog.EventDate = DateTime.Now;
-        eventLog.Sender = "Core";
-        eventLog.EventNo = (int) EventLogType.REGISTERCONTENT_VFSWATCH;
+        eventLog.Datetime = DateTime.Now;
+        eventLog.Owner = "SYSTEM";
+        eventLog.ValueFormat = "CreateEntity-JSON";
+        EventDataUtil.ToValue (eventLog, new CreateEntityInfo { Name = categoryName, EntityName = "Category" });
         mEventLogRepository.Save ();
 
         createdFlag = true;

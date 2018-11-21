@@ -8,13 +8,15 @@ namespace Snapshot.Server.Service.Model
     {
         public long Id { get; set; }
 
-        public DateTime EventDate { get; set; }
+        public DateTime Datetime { get; set; }
 
-        public int EventNo { get; set; }
+        public string EventType { get; set; }
 
-        public string Sender { get; set; }
+        public string Owner { get; set; }
 
-        public string Message { get; set; }
+        public string User { get; set; }
+
+        public string ValueFormat { get; set; }
 
         public string Value { get; set; }
     }

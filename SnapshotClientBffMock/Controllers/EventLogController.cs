@@ -6,6 +6,7 @@ using Snapshot.Client.Bff.Sdk;
 using Snapshot.Client.Bff.Sdk.Dao;
 using Snapshot.Client.Bff.Sdk.Data.Dto;
 using Snapshot.Share.Common.Utils;
+using SnapshotShareCommon.Infra.Data.EventData;
 
 namespace Snapshot.Client.Bff.Mock.Controllers {
   /// <summary>
@@ -24,10 +25,61 @@ namespace Snapshot.Client.Bff.Mock.Controllers {
     /// コンストラクタ
     /// </summary>
     /// <param name="eventLogDao"></param>
+    /// <param name="contentDao"></param>
     public EventLogController (IEventLogDao eventLogDao,
       IContentDao contentDao) {
       this.mEventLogDao = eventLogDao;
       this.mContentDao = contentDao;
+    }
+
+    /// <summary>
+    /// プレビュー表示イベントを発行します
+    /// </summary>
+    /// <param name="contentId"></param>
+    [HttpPost ()]
+    public ActionResult<BffResponseApi<EventLog>> PreviewShowEventLog ([FromQuery] long contentId) {
+      PreviewInfo previewInfo = new PreviewInfo ();
+      previewInfo.TargetContentId = contentId;
+      previewInfo.StartDisplayDate = DateTime.Now;
+
+      EventLog eventLog = new EventLog ();
+      eventLog.EventType = "PREVIEW";
+      eventLog.Owner = "CLIENT";
+      eventLog.User = "PRIVATE";
+      eventLog.ValueFormat = "Preview-JSON";
+      eventLog.Datetime = DateTime.Now;
+      EventDataUtil.ToValue (eventLog, previewInfo);
+      LOGGER.Info ("プレビュー表示イベントログ登録={0}", eventLog.Value);
+
+      var response = new BffResponseApi<EventLog> ();
+      response.Value = this.mEventLogDao.Create (eventLog);
+      return response;
+    }
+
+    /// <summary>
+    /// プレビュー非表示イベントを発行します
+    /// </summary>
+    /// <param name="eventLogId">更新するイベントログID</param>
+    /// <param name="prevContentId">直前にプレビュー表示していたコンテントID(オプション)</param>
+    [HttpPatch ("{eventLogId}")]
+    public ActionResult<BffResponseApi<string>> PreviewHideEventLog (long eventLogId, [FromQuery (Name = "PrevContentId")] long? prevContentId) {
+      LOGGER.Trace ("IN");
+      var eventlog = this.mEventLogDao.Load (eventLogId);
+      if (eventlog == null) {
+        throw new ApplicationException ("イベントログの読み込みに失敗しました。");
+      }
+
+      var previewInfo = EventDataUtil.FromPreviewJson (eventlog);
+      previewInfo.EndDisplayDate = DateTime.Now;
+      if (prevContentId.HasValue) {
+        previewInfo.PrevContentId = prevContentId.Value;
+      }
+      EventDataUtil.ToValue (eventlog, previewInfo);
+      this.mEventLogDao.UpdateValue (eventlog);
+
+      var response = new BffResponseApi<string> ();
+      LOGGER.Trace ("OUT");
+      return response;
     }
 
     /// <summary>
@@ -43,7 +95,7 @@ namespace Snapshot.Client.Bff.Mock.Controllers {
       var dateRangeText = dateRange.Split ('-');
       var startDate = DateTimeOffset.FromUnixTimeSeconds (long.Parse (dateRangeText[0]));
       var endDate = DateTimeOffset.FromUnixTimeSeconds (long.Parse (dateRangeText[1]));
-      var eventLogList = this.mEventLogDao.Find (startDate.LocalDateTime, endDate.LocalDateTime);
+      var eventLogList = this.mEventLogDao.Find (startDate.LocalDateTime, endDate.LocalDateTime, eventType);
       var result = new BffResponseApi<EventLog[]> ();
       result.Value = eventLogList.ToArray ();
 
@@ -55,8 +107,8 @@ namespace Snapshot.Client.Bff.Mock.Controllers {
 
           foreach (var eventlog in eventLogList) {
             var eventValue = EventDataUtil.FromPreviewJson (eventlog);
-            if (eventValue.TargetContentId > 0) {
-              var content = mContentDao.LoadContent (eventValue.TargetContentId);
+            if (eventValue.TargetContentId.HasValue && eventValue.TargetContentId.Value > 0) {
+              var content = mContentDao.LoadContent (eventValue.TargetContentId.Value);
               contentByEventLogId.Add (eventlog.Id, content);
 
               // フラグが有効な場合、カテゴリ情報を読み込む
@@ -79,6 +131,22 @@ namespace Snapshot.Client.Bff.Mock.Controllers {
       }
 
       return result;
+    }
+
+    /// <summary>
+    /// イベントログを更新します
+    /// </summary>
+    /// <param name="eventLog">イベントログ</param>
+    /// <returns></returns>
+    [HttpPatch ()]
+    public ActionResult<BffResponseApi<string>> UpdateEventLog ([FromBody] EventLog eventLog) {
+      LOGGER.Trace ("IN");
+      LOGGER.Info ("イベントログ({0})を更新します。", eventLog.Id);
+      this.mEventLogDao.UpdateValue (eventLog);
+
+      var response = new BffResponseApi<string> ();
+      LOGGER.Trace ("OUT");
+      return response;
     }
   }
 }

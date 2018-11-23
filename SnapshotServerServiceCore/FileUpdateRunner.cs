@@ -304,8 +304,13 @@ namespace Snapshot.Server.Service.Core.Service {
         var eventLog = mEventLogRepository.New ();
         eventLog.Datetime = DateTime.Now;
         eventLog.Owner = "SYSTEM";
+        eventLog.EventType = "CREATE";
         eventLog.ValueFormat = "CreateEntity-JSON";
-        EventDataUtil.ToValue (eventLog, new CreateEntityInfo { Name = categoryName, EntityName = "Category" });
+        EventDataUtil.ToValue (eventLog, new CreateEntityInfo {
+          Name = categoryName,
+            EntityName = "Category",
+            EntityId = category.Id,
+        });
         mEventLogRepository.Save ();
 
         createdFlag = true;

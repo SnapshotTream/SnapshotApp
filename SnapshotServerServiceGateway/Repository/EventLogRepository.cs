@@ -29,5 +29,16 @@ namespace Snapshot.Server.Service.Gateway.Repository {
       var entity = new EventLog ();
       return this.Add (entity);
     }
+
+    public IEventLog New (IEventLog source) {
+      var entity = new EventLog ();
+      entity.Datetime = source.Datetime;
+      entity.EventType = source.EventType;
+      entity.Owner = source.Owner;
+      entity.User = source.User;
+      entity.Value = source.Value;
+      entity.ValueFormat = source.ValueFormat;
+      return this.Add (entity);
+    }
   }
 }

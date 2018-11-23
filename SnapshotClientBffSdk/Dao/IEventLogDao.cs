@@ -17,7 +17,21 @@ namespace Snapshot.Client.Bff.Sdk.Dao {
     /// </summary>
     /// <param name="startDate"></param>
     /// <param name="endDate"></param>
+    /// <param name="eventType"></param>
     /// <returns></returns>
-    List<EventLog> Find (DateTime startDate, DateTime endDate);
+    List<EventLog> Find (DateTime startDate, DateTime endDate, string eventType);
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="eventLog"></param>
+    /// <returns></returns>
+    EventLog Create(EventLog eventLog);
+
+    /// <summary>
+    /// イベントログを更新します。
+    /// </summary>
+    /// <param name="eventLog"></param>
+    void UpdateValue(EventLog eventLog);
   }
 }

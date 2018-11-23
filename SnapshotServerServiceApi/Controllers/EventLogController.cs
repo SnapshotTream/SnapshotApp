@@ -5,6 +5,9 @@ using NLog;
 using Snapshot.Server.Service.Infra.Core;
 using Snapshot.Server.Service.Infra.Model;
 using Snapshot.Server.Service.Infra.Repository;
+using Snapshot.Server.Service.Model;
+using Snapshot.Share.Common.Utils;
+using SnapshotShareCommon.Infra.Data.EventData;
 
 namespace Snapshot.Server.Service.Api.Controllers {
 
@@ -28,6 +31,43 @@ namespace Snapshot.Server.Service.Api.Controllers {
     }
 
     /// <summary>
+    /// イベントログを登録します。
+    /// </summary>
+    /// <param name="eventLog">イベントログ</param>
+    /// <returns></returns>
+    [HttpPost ()]
+    public ActionResult<ResponseAapi<IEventLog>> Save ([FromBody] EventLog eventLog) {
+      mLogger.Trace ("IN");
+      var entity = this.mEventLogRepository.New (eventLog);
+      this.mEventLogRepository.Save ();
+
+      mLogger.Debug ("イベントログ({0})を登録しました。", entity.Id);
+
+      var response = new ResponseAapi<IEventLog> ();
+      response.Value = entity;
+      mLogger.Trace ("OUT");
+      return response;
+    }
+
+    /// <summary>
+    /// イベントログを保存します。
+    /// </summary>
+    /// <remarks>
+    /// 更新できるフィールドは下記のデータに限ります。
+    /// ・Value
+    /// </remarks>
+    /// <param name="id">イベントログID</param>
+    /// <param name="eventLog">更新データ</param>
+    /// <returns></returns>
+    [HttpPatch ("{id}")]
+    public ActionResult UpdateValue (long id, [FromBody] EventLog eventLog) {
+      var entity = this.mEventLogRepository.Load (id);
+      entity.Value = eventLog.Value;
+      this.mEventLogRepository.Save ();
+      return Ok ();
+    }
+
+    /// <summary>
     /// イベントログを取得します。
     /// </summary>
     /// <param name="id"></param>
@@ -37,6 +77,8 @@ namespace Snapshot.Server.Service.Api.Controllers {
       var response = new ResponseAapi<IEventLog> ();
 
       var eventlog = mEventLogRepository.Load (id);
+      response.Value = eventlog;
+
       return response;
     }
 
@@ -61,11 +103,12 @@ namespace Snapshot.Server.Service.Api.Controllers {
     }
 
     /// <summary>
-    /// ///
+    ///
     /// </summary>
     /// <param name="dateRange"></param>
+    /// <param name="eventType"></param>
     /// <returns></returns>
-    [HttpGet ("s/{dateRange}/{eventType")]
+    [HttpGet ("s/{dateRange}/{eventType}")]
     public ActionResult<ResponseAapi<ICollection<IEventLog>>> GetEventLogByDate (string dateRange, string eventType) {
       var response = new ResponseAapi<ICollection<IEventLog>> ();
 

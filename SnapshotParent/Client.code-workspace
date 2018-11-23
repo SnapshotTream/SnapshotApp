@@ -13,5 +13,7 @@
 			"path": "..\\SnapshotClientBffMock"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "SnapshotClientBffMock"
+	}
 }

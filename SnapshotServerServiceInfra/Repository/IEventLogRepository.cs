@@ -13,6 +13,13 @@ namespace Snapshot.Server.Service.Infra.Repository {
     /// <summary>
     ///
     /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    IEventLog New (IEventLog source);
+
+    /// <summary>
+    ///
+    /// </summary>
     /// /// <param name="id"></param>
     /// <returns></returns>
     IEventLog Load (long id);

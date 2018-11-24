@@ -18,7 +18,7 @@ namespace Foxpict.Service.Web.Controllers {
   [Route ("api/[controller]")]
   [ApiController]
   public class LabelController : Controller {
-    private static Logger mLogger = LogManager.GetCurrentClassLogger ();
+    private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger ();
 
     readonly ApiResponseBuilder mBuilder;
 
@@ -30,6 +30,7 @@ namespace Foxpict.Service.Web.Controllers {
     /// コンストラクタ
     /// </summary>
     /// <param name="builder"></param>
+    /// <param name="categoryRepository"></param>
     /// <param name="labelRepository"></param>
     public LabelController (ApiResponseBuilder builder,
       ICategoryRepository categoryRepository,
@@ -46,7 +47,7 @@ namespace Foxpict.Service.Web.Controllers {
     [HttpGet ()]
     public ResponseAapi<ICollection<ILabel>> GetLabel ([FromQuery] RequestParamGetLabel requestParam) {
       // TODO: オフセット値を使用したデータ取得
-      mLogger.Info ("Parameter Offset:{}", requestParam.Offset);
+      LOGGER.Info ("Parameter Offset:{}", requestParam.Offset);
 
       List<ILabel> labels = new List<ILabel> ();
       var response = new ResponseAapi<ICollection<ILabel>> ();
@@ -56,7 +57,7 @@ namespace Foxpict.Service.Web.Controllers {
         }
         response.Value = labels;
       } catch (Exception expr) {
-        mLogger.Error (expr.Message);
+        LOGGER.Error (expr.Message);
         throw new InterfaceOperationException ();
       }
 
@@ -71,7 +72,7 @@ namespace Foxpict.Service.Web.Controllers {
     /// <returns></returns>
     [HttpGet ("{id}")]
     [ProducesResponseType (200)]
-    public ActionResult<ResponseAapi<ILabel>> GetLabel (int id) {
+    public ActionResult<ResponseAapi<ILabel>> GetLabel (long id) {
       var response = new ResponseAapi<ILabel> ();
       mBuilder.AttachLabelEntity (id, response);
 
@@ -91,11 +92,11 @@ namespace Foxpict.Service.Web.Controllers {
     /// <summary>
     /// リンクデータに含まれるカテゴリ一覧を取得します
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">ラベルID</param>
     /// <returns></returns>
     [HttpGet ("{id}/l/category-list")]
     [ProducesResponseType (200)]
-    public ActionResult<ResponseAapi<ICollection<ICategory>>> GetLabelLink_CategoryList (int id) {
+    public ActionResult<ResponseAapi<ICollection<ICategory>>> GetLabelLink_CategoryList (long id) {
       // TODO: すべての要素を返さずに、ページングで特定範囲の取得に対応する
       var categoryList = new List<ICategory> ();
       var label = this.mLabelRepository.Load (id);
@@ -113,12 +114,12 @@ namespace Foxpict.Service.Web.Controllers {
     /// <summary>
     /// リンクデータに含まれるコンテント一覧を取得します
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">ラベルID</param>
     /// <returns></returns>
     /// <response code="200">ラベルと関連付けられたコンテント一覧を取得しました</response>
     [HttpGet ("{id}/l/content-list")]
     [ProducesResponseType (200)]
-    public ActionResult<ResponseAapi<ICollection<IContent>>> GetLabelLink_ContentList (int id) {
+    public ActionResult<ResponseAapi<ICollection<IContent>>> GetLabelLink_ContentList (long id) {
       // TODO: すべての要素を返さずに、ページングで特定範囲の取得に対応する
       var contentList = new List<IContent> ();
       var label = this.mLabelRepository.Load (id);
@@ -136,11 +137,11 @@ namespace Foxpict.Service.Web.Controllers {
     /// <summary>
     /// リンクデータに含まれる子階層ラベル一覧を取得します
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">ラベルID</param>
     /// <returns></returns>
     [HttpGet ("{id}/l/children")]
     [ProducesResponseType (200)]
-    public ActionResult<ResponseAapi<ICollection<ILabel>>> GetLabelLink_Children (int id) {
+    public ActionResult<ResponseAapi<ICollection<ILabel>>> GetLabelLink_Children (long id) {
       ResponseAapi<ICollection<ILabel>> response;
       if (id == 0) {
         response = new ResponseAapi<ICollection<ILabel>> {
@@ -166,13 +167,13 @@ namespace Foxpict.Service.Web.Controllers {
     [HttpGet ("{id}/children/{link_id}")]
     [ProducesResponseType (200)]
     [ProducesResponseType (400)]
-    public ActionResult<ResponseAapi<ICategory>> GetCategoryLink_cc (int id, int link_id) {
-      mLogger.Info ("REQUEST - {0}/cc/{1}", id, link_id);
+    public ActionResult<ResponseAapi<ICategory>> GetCategoryLink_cc (long id, long link_id) {
+      LOGGER.Info ("REQUEST - {0}/cc/{1}", id, link_id);
       var response = new ResponseAapi<ICategory> ();
 
       var linkedCategory = this.mLabelRepository.FindChildren (id).Where (prop => prop.Id == link_id).SingleOrDefault ();
       if (linkedCategory != null) {
-        var category = mCategoryRepository.Load(link_id);
+        var category = mCategoryRepository.Load (link_id);
         mBuilder.AttachCategoryEntity (category, response);
 
         var sub = this.mLabelRepository.FindChildren (linkedCategory.Id).FirstOrDefault ();
@@ -206,7 +207,7 @@ namespace Foxpict.Service.Web.Controllers {
         else
           throw new ApplicationException (string.Format ("指定したラベル情報(ID:{0})の読み込みに失敗しました", labelId));
       } catch (Exception expr) {
-        mLogger.Error (expr.Message);
+        LOGGER.Error (expr.Message);
         throw new InterfaceOperationException ();
       }
 
@@ -226,7 +227,7 @@ namespace Foxpict.Service.Web.Controllers {
 
     /// <summary>
     ///
-    /// /// </summary>
+    /// </summary>
     public class RequestParamGetLabel {
       /// <summary>
       ///

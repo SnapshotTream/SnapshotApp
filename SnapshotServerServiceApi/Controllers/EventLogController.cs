@@ -18,7 +18,7 @@ namespace Snapshot.Server.Service.Api.Controllers {
   [Route ("api/event")]
   [ApiController]
   public class EventLogController : Controller {
-    private readonly Logger mLogger = LogManager.GetCurrentClassLogger ();
+    private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger ();
 
     private readonly IEventLogRepository mEventLogRepository;
 
@@ -37,15 +37,15 @@ namespace Snapshot.Server.Service.Api.Controllers {
     /// <returns></returns>
     [HttpPost ()]
     public ActionResult<ResponseAapi<IEventLog>> Save ([FromBody] EventLog eventLog) {
-      mLogger.Trace ("IN");
+      LOGGER.Trace ("IN");
       var entity = this.mEventLogRepository.New (eventLog);
       this.mEventLogRepository.Save ();
 
-      mLogger.Debug ("イベントログ({0})を登録しました。", entity.Id);
+      LOGGER.Debug ("イベントログ({0})を登録しました。", entity.Id);
 
       var response = new ResponseAapi<IEventLog> ();
       response.Value = entity;
-      mLogger.Trace ("OUT");
+      LOGGER.Trace ("OUT");
       return response;
     }
 

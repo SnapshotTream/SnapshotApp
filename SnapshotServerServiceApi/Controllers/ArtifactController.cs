@@ -30,6 +30,7 @@ namespace Foxpict.Service.Web.Controllers {
     /// コンストラクタ
     /// </summary>
     /// <param name="builder"></param>
+    /// <param name="categoryRepository"></param>
     /// <param name="contentRepository"></param>
     /// <param name="fileMappingInfoRepository"></param>
     public ArtifactController (
@@ -48,12 +49,11 @@ namespace Foxpict.Service.Web.Controllers {
     /// コンテント詳細情報取得API
     /// </summary>
     /// <remarks>
-    /// GET aapi/artifact/{id}
     /// </remarks>
     /// <param name="id">コンテントID</param>
     /// <returns></returns>
     [HttpGet ("{id}")]
-    public ResponseAapi<IContent> GetContent (int id) {
+    public ResponseAapi<IContent> GetContent (long id) {
       var response = new ResponseAapi<IContent> ();
       try {
         mBuilder.AttachContentEntity (id, response);
@@ -94,8 +94,8 @@ namespace Foxpict.Service.Web.Controllers {
     /// <param name="id">コンテントID</param>
     /// <returns>コンテントのプレビューファイル</returns>
     [HttpGet ("{id}/preview")]
-    public IActionResult FetchPreviewFile (int id) {
-      _logger.Debug ("IN");
+    public IActionResult FetchPreviewFile (long id) {
+      _logger.Trace ("IN");
       var content = mContentRepository.Load (id);
       if (content == null) throw new InterfaceOperationException ("コンテント情報が見つかりません");
 
@@ -112,7 +112,7 @@ namespace Foxpict.Service.Web.Controllers {
       var file = PhysicalFile (
         Path.Combine (efmi.GetWorkspace ().PhysicalPath, efmi.MappingFilePath), efmi.Mimetype, now, etag);
 
-      _logger.Debug ("OUT");
+      _logger.Trace ("OUT");
       return file;
     }
 
@@ -124,7 +124,7 @@ namespace Foxpict.Service.Web.Controllers {
     /// <returns></returns>
     [HttpPatch ("{id}")]
     public ResponseAapi<Boolean> UpdateContent (long id, [FromBody] Content content) {
-      _logger.Debug ("IN");
+      _logger.Trace ("IN");
       var response = new ResponseAapi<Boolean> ();
 
       var targetContent = mContentRepository.Load (id);
@@ -138,7 +138,7 @@ namespace Foxpict.Service.Web.Controllers {
 
       mContentRepository.Save ();
       response.Value = true;
-      _logger.Debug ("OUT");
+      _logger.Trace ("OUT");
       return response;
     }
 
@@ -150,7 +150,7 @@ namespace Foxpict.Service.Web.Controllers {
     /// <returns>更新処理が正常終了した場合はtrue</returns>
     [HttpPut ("{id}/exec/{operation}")]
     public ResponseAapi<Boolean> UpdateContentStatus (long id, string operation) {
-      _logger.Debug ("IN");
+      _logger.Trace ("IN");
       var response = new ResponseAapi<Boolean> ();
 
       var content = mContentRepository.Load (id);
@@ -177,7 +177,7 @@ namespace Foxpict.Service.Web.Controllers {
       }
 
       response.Value = result;
-      _logger.Debug ("OUT");
+      _logger.Trace ("OUT");
       return response;
     }
   }

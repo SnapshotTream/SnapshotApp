@@ -22,7 +22,7 @@ namespace Foxpict.Service.Web.Controllers {
   [Route ("api/[controller]")]
   [ApiController]
   public class CategoryController : Controller {
-    private readonly Logger mLogger;
+    private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger ();
 
     private readonly ApiResponseBuilder mBuilder;
 
@@ -40,7 +40,6 @@ namespace Foxpict.Service.Web.Controllers {
     /// <param name="categoryRepository"></param>
     /// <param name="contentRepository"></param>
     public CategoryController (ApiResponseBuilder builder, ExtentionManager extentionManager, ICategoryRepository categoryRepository, IContentRepository contentRepository) {
-      this.mLogger = LogManager.GetCurrentClassLogger ();
       this.mBuilder = builder;
       this.mCategoryRepository = categoryRepository;
       this.mExtentionManager = extentionManager;
@@ -73,11 +72,11 @@ namespace Foxpict.Service.Web.Controllers {
             category.ArtworkThumbnailKey = content.ThumbnailKey;
             mCategoryRepository.Save ();
           } else {
-            mLogger.Warn ("コンテント(ID:{0})にサムネイルキーが設定されていないため、カテゴリにアートワークを設定できませんでした。", content.Id);
+            LOGGER.Warn ("コンテント(ID:{0})にサムネイルキーが設定されていないため、カテゴリにアートワークを設定できませんでした。", content.Id);
           }
         }
       } else {
-        mLogger.Warn ("不明なモード({0})のため、アートワークの設定を行いませんでした。", queryParam.Mode);
+        LOGGER.Warn ("不明なモード({0})のため、アートワークの設定を行いませんでした。", queryParam.Mode);
       }
 
       var response = new ResponseAapi<ICategory> ();
@@ -88,11 +87,11 @@ namespace Foxpict.Service.Web.Controllers {
     /// <summary>
     /// 任意のカテゴリを取得します
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">カテゴリID</param>
     /// <param name="param"></param>
     [HttpGet ("{id}")]
     [ProducesResponseType (200)]
-    public ActionResult<ResponseAapi<ICategory>> GetCategory (int id, [FromQuery] CategoryParam param) {
+    public ActionResult<ResponseAapi<ICategory>> GetCategory (long id, [FromQuery] CategoryParam param) {
       var response = new ResponseAapi<ICategory> ();
 
       var category = mCategoryRepository.Load (id);
@@ -121,14 +120,14 @@ namespace Foxpict.Service.Web.Controllers {
     /// <summary>
     /// カテゴリの親階層カテゴリを取得します
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">カテゴリID</param>
     /// <returns></returns>
     /// <response code="200">カテゴリと関連付けられた親階層カテゴリを取得しました</response>
     /// <response code="400">指定した項目が取得できませんでした</response>
     [HttpGet ("{id}/pc")]
     [ProducesResponseType (200)]
     [ProducesResponseType (400)]
-    public ActionResult<ResponseAapi<ICategory>> GetCategoryLink_pc (int id) {
+    public ActionResult<ResponseAapi<ICategory>> GetCategoryLink_pc (long id) {
       var response = new ResponseAapi<ICategory> {
         Value = GetCategoryLink (id, "pc").FirstOrDefault ()
       };
@@ -143,11 +142,11 @@ namespace Foxpict.Service.Web.Controllers {
     /// <summary>
     /// カテゴリに含まれる子階層カテゴリ一覧を取得します
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">カテゴリID</param>
     /// <response code="200">カテゴリと関連付けられた子階層カテゴリ一覧を取得しました</response>
     [HttpGet ("{id}/cc")]
     [ProducesResponseType (200)]
-    public ActionResult<ResponseAapi<ICollection<ICategory>>> GetCategoryLink_cc (int id) {
+    public ActionResult<ResponseAapi<ICollection<ICategory>>> GetCategoryLink_cc (long id) {
       var response = new ResponseAapi<ICollection<ICategory>> {
         Value = GetCategoryLink (id, "cc")
       };
@@ -158,12 +157,12 @@ namespace Foxpict.Service.Web.Controllers {
     /// <summary>
     /// カテゴリに含まれるコンテント一覧を取得します
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">カテゴリID</param>
     /// <response code="200">カテゴリと関連付けられたコンテント一覧を取得しました</response>
     [HttpGet ("{id}/la")]
     [ProducesResponseType (200)]
-    public ActionResult<ResponseAapi<ICollection<IContent>>> GetCategoryLink_la (int id) {
-      mLogger.Info ("REQUEST - {0}", id);
+    public ActionResult<ResponseAapi<ICollection<IContent>>> GetCategoryLink_la (long id) {
+      LOGGER.Info ("REQUEST - {0}", id);
 
       var categoryList = new List<IContent> ();
       var response = new ResponseAapi<ICollection<IContent>> ();
@@ -182,12 +181,12 @@ namespace Foxpict.Service.Web.Controllers {
     /// <remarks>
     ///    GET api/category/{id}/albc/{link_id}
     /// </remarks>
-    /// <param name="id"></param>
+    /// <param name="id">カテゴリID</param>
     /// <param name="link_id"></param>
     /// <returns></returns>
     [HttpGet ("{id}/albc/{link_id}")]
-    public ResponseAapi<Category> GetCategoryLink_albc (int id, int link_id) {
-      mLogger.Info ("REQUEST - {0}/albc/{1}", id, link_id);
+    public ResponseAapi<Category> GetCategoryLink_albc (long id, long link_id) {
+      LOGGER.Info ("REQUEST - {0}/albc/{1}", id, link_id);
 
       var response = new ResponseAapi<Category> ();
       response.Value = new Category { Id = link_id, Name = "リンクカテゴリ " + link_id };
@@ -206,8 +205,8 @@ namespace Foxpict.Service.Web.Controllers {
     [HttpGet ("{id}/cc/{link_id}")]
     [ProducesResponseType (200)]
     [ProducesResponseType (400)]
-    public ActionResult<ResponseAapi<ICategory>> GetCategoryLink_cc (int id, int link_id) {
-      mLogger.Info ("REQUEST - {0}/cc/{1}", id, link_id);
+    public ActionResult<ResponseAapi<ICategory>> GetCategoryLink_cc (long id, long link_id) {
+      LOGGER.Info ("REQUEST - {0}/cc/{1}", id, link_id);
       var response = new ResponseAapi<ICategory> ();
 
       var linkedCategory = this.mCategoryRepository.FindChildren (id).Where (prop => prop.Id == link_id).SingleOrDefault ();
@@ -239,8 +238,8 @@ namespace Foxpict.Service.Web.Controllers {
     [HttpGet ("{id}/la/{link_id}")]
     [ProducesResponseType (200)]
     [ProducesResponseType (400)]
-    public ActionResult<ResponseAapi<IContent>> GetCategoryLink_la (int id, int link_id) {
-      mLogger.Info ("REQUEST - {0}/la/{1}", id, link_id);
+    public ActionResult<ResponseAapi<IContent>> GetCategoryLink_la (long id, long link_id) {
+      LOGGER.Info ("REQUEST - {0}/la/{1}", id, link_id);
 
       var response = new ResponseAapi<IContent> ();
       var linkedContent = this.mCategoryRepository.Load (id).GetContentList ().Where (prop => prop.Id == link_id).SingleOrDefault ();
@@ -262,7 +261,7 @@ namespace Foxpict.Service.Web.Controllers {
     [HttpGet ("w_album/+{labels}")]
     [ProducesResponseType (200)]
     public ActionResult<ResponseAapi<ICollection<ICategory>>> SearchAlbumCategory1 (string labels) {
-      mLogger.Info ("REQUEST - {0}", labels);
+      LOGGER.Info ("REQUEST - {0}", labels);
       var response = new ResponseAapi<ICollection<ICategory>> ();
       var categoryList = new List<ICategory> ();
 
@@ -292,7 +291,7 @@ namespace Foxpict.Service.Web.Controllers {
     [HttpGet ("w_album/-{labels}")]
     [ProducesResponseType (200)]
     public ActionResult<ResponseAapi<ICollection<ICategory>>> SearchAlbumCategory2 (string labels) {
-      mLogger.Info ("REQUEST - {0}", labels);
+      LOGGER.Info ("REQUEST - {0}", labels);
       var response = new ResponseAapi<ICollection<ICategory>> ();
       var categoryList = new List<ICategory> ();
 
@@ -330,8 +329,8 @@ namespace Foxpict.Service.Web.Controllers {
     [HttpPut ("{id}/read")]
     [ProducesResponseType (200)]
     [ProducesResponseType (400)]
-    public ActionResult PutReadableCategory (int id) {
-      mLogger.Info ("REQUEST - {0}/read", id);
+    public ActionResult PutReadableCategory (long id) {
+      LOGGER.Info ("REQUEST - {0}/read", id);
 
       var category = mCategoryRepository.Load (id);
       if (category != null) {
@@ -356,8 +355,8 @@ namespace Foxpict.Service.Web.Controllers {
     /// <param name="id">更新対象のカテゴリを示すキー</param>
     /// <param name="value">カテゴリの更新対象のパラメータが含まれるJSON文字列</param>
     [HttpPut ("{id}")]
-    public void PutCategoryProp (int id, [FromBody] string value) {
-      mLogger.Info ("REQUEST - {0} Body={1}", id, value);
+    public void PutCategoryProp (long id, [FromBody] string value) {
+      LOGGER.Info ("REQUEST - {0} Body={1}", id, value);
 
       mCategoryRepository.UpdatePopulateFromJson (id, value);
       mCategoryRepository.Save ();
@@ -373,7 +372,7 @@ namespace Foxpict.Service.Web.Controllers {
     /// <summary>
     /// カテゴリ情報リンク取得
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">カテゴリID</param>
     /// <param name="link_type">リンクタイプを指定します。</param>
     /// <remarks>
     /// GET api/category/{id}/{link_type}
@@ -382,7 +381,7 @@ namespace Foxpict.Service.Web.Controllers {
     /// "cc" : 子階層のカテゴリ情報リストを取得します。
     /// </remarks>
     /// <returns></returns>
-    private ICollection<ICategory> GetCategoryLink (int id, string link_type) {
+    private ICollection<ICategory> GetCategoryLink (long id, string link_type) {
       var categoryList = new List<ICategory> ();
 
       if (link_type == "pc") {

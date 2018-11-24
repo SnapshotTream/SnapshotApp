@@ -15,7 +15,7 @@ namespace Foxpict.Service.Web.Controllers {
 
     /// <summary>
     /// コンストラクタ
-    /// /// </summary>
+    /// </summary>
     /// <param name="thumbnailRepository"></param>
     public ThumbnailController (IThumbnailRepository thumbnailRepository) {
       this.thumbnailRepository = thumbnailRepository;

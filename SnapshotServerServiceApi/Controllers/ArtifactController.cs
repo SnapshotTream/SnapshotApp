@@ -73,14 +73,14 @@ namespace Foxpict.Service.Web.Controllers {
     /// <summary>
     /// コンテント情報のリンクデータ(所属カテゴリ情報)を取得します
     /// </summary>
-    /// <param name="id">コンテント情報のキー</param>8
+    /// <param name="id">コンテント情報のキー</param>
     /// <returns>所属カテゴリ情報</returns>
     [HttpGet ("{id}/category")]
     public ResponseAapi<ICategory> GetContentLink_Category (int id) {
       var response = new ResponseAapi<ICategory> ();
       try {
         var content = mContentRepository.Load (id);
-        mBuilder.AttachCategoryEntity (content.GetCategory (), response);
+        mBuilder.AttachCategoryEntity (mCategoryRepository.Load (content.GetCategory ().Id), response);
       } catch (Exception expr) {
         _logger.Error (expr.Message);
         throw new InterfaceOperationException ();
@@ -122,7 +122,7 @@ namespace Foxpict.Service.Web.Controllers {
     /// <param name="id">更新対象のコンテントID</param>
     /// <param name="content">更新オブジェクト</param>
     /// <returns></returns>
-    [HttpPut ("{id}/a")]
+    [HttpPatch ("{id}")]
     public ResponseAapi<Boolean> UpdateContent (long id, [FromBody] Content content) {
       _logger.Debug ("IN");
       var response = new ResponseAapi<Boolean> ();

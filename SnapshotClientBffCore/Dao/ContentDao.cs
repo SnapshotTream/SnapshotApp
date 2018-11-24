@@ -40,21 +40,18 @@ namespace Snapshot.Client.Bff.Dao {
       return content;
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="content"></param>
     public void Update (Content content) {
-      this.mLogger.Debug ("IN");
+      this.mLogger.Trace ("IN");
       try {
-        var request = new RestRequest ("artifact/{id}/a", Method.PUT);
+        var request = new RestRequest ("artifact/{id}", Method.PATCH);
+        request.RequestFormat = DataFormat.Json;
         request.AddUrlSegment ("id", content.Id);
         request.AddJsonBody (content);
         var response = mClient.Execute<ServerResponseApi<Boolean>> (request);
       } catch (Exception expr) {
         mLogger.Error (expr);
       }
-      this.mLogger.Debug ("OUT");
+      this.mLogger.Trace ("OUT");
     }
 
     /// <summary>
@@ -62,11 +59,11 @@ namespace Snapshot.Client.Bff.Dao {
     /// </summary>
     /// <param name="contentId"></param>
     public void UpdateRead (long contentId) {
-      this.mLogger.Debug ("IN");
+      this.mLogger.Trace ("IN");
       var request = new RestRequest ("artifact/{id}/exec/read", Method.PUT);
       request.AddUrlSegment ("id", contentId);
       var response = mClient.Execute<ServerResponseApi<Boolean>> (request);
-      this.mLogger.Debug ("OUT");
+      this.mLogger.Trace ("OUT");
     }
 
     /// <summary>

@@ -18,6 +18,7 @@ using NLog;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
+using Snapshot.Client.Bff.Core.Dao;
 using Snapshot.Client.Bff.Dao;
 using Snapshot.Client.Bff.Mock.Data;
 using Snapshot.Client.Bff.Sdk.Dao;
@@ -131,6 +132,7 @@ namespace Snapshot.Client.Bff.Mock {
       mContainer.Register<ICategoryDao, CategoryDao> ();
       mContainer.Register<IContentDao, ContentDao> ();
       mContainer.Register<ILabelDao, LabelDao> ();
+      mContainer.Register<IEventLogDao, EventLogDao> ();
     }
   }
 }

@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 using Snapshot.Share.Common.Exception;
 using Snapshot.Share.Common.Infra.Data.EventData;
 using Snapshot.Share.Common.Infra.Model;
-using SnapshotShareCommon.Infra.Data.EventData;
 
 namespace Snapshot.Share.Common.Utils {
   public static class EventDataUtil {

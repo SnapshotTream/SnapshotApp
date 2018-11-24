@@ -7,7 +7,7 @@ using Snapshot.Server.Service.Infra.Model;
 using Snapshot.Server.Service.Infra.Repository;
 using Snapshot.Server.Service.Model;
 using Snapshot.Share.Common.Utils;
-using SnapshotShareCommon.Infra.Data.EventData;
+using Snapshot.Share.Common.Infra.Data.EventData;
 
 namespace Snapshot.Server.Service.Api.Controllers {
 

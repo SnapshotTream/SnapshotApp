@@ -39,6 +39,11 @@ namespace Snapshot.Client.Bff.Dao {
         }
 
         var category = response.Data.Value;
+
+        //関連データ
+        category.Labels = response.Data.GetRelative<List<Label>>("labels");
+
+        // リンクデータ
         category.LinkSubCategoryList = LinkGetSubCategory (categoryId, offsetSubCategory, limitSubCategory, response);
         category.LinkContentList = LinkGetContentList (categoryId, offsetContent, response);
         return category;

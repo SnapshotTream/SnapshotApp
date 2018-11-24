@@ -6,7 +6,7 @@ using Snapshot.Client.Bff.Sdk;
 using Snapshot.Client.Bff.Sdk.Dao;
 using Snapshot.Client.Bff.Sdk.Data.Dto;
 using Snapshot.Share.Common.Utils;
-using SnapshotShareCommon.Infra.Data.EventData;
+using Snapshot.Share.Common.Infra.Data.EventData;
 
 namespace Snapshot.Client.Bff.Mock.Controllers {
   /// <summary>

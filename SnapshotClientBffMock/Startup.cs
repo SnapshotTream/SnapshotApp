@@ -133,6 +133,7 @@ namespace Snapshot.Client.Bff.Mock {
       mContainer.Register<IContentDao, ContentDao> ();
       mContainer.Register<ILabelDao, LabelDao> ();
       mContainer.Register<IEventLogDao, EventLogDao> ();
+      mContainer.Register<IThumbnailDao, ThumbnailDao> ();
     }
   }
 }

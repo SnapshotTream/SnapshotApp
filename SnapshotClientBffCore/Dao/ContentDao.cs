@@ -19,6 +19,14 @@ namespace Snapshot.Client.Bff.Dao {
       this.mLogger = LogManager.GetCurrentClassLogger ();
     }
 
+    public byte[] LoadContentImage(long contentId,out string contentType) {
+      var request = new RestRequest ("artifact/{id}/preview", Method.GET);
+      request.AddUrlSegment ("id", contentId);
+      var response = mClient.Execute (request);
+      contentType = response.ContentType;
+      return response.RawBytes;
+    }
+
     /// <summary>
     /// コンテント情報を読み込みます
     /// </summary>
@@ -31,11 +39,7 @@ namespace Snapshot.Client.Bff.Dao {
       var response = mClient.Execute<ServerResponseApi<Content>> (request);
 
       var content = response.Data.Value;
-      // サムネイルが存在する場合は、サムネイルのURLを設定
-      if (!string.IsNullOrEmpty (content.ThumbnailKey)) {
-        content.ThumbnailImageSrcUrl = mDaoContext.ServerUrl + "/thumbnail/" + content.ThumbnailKey;
-      }
-      content.PreviewFileUrl = mDaoContext.ServerUrl + "/artifact/" + content.Id + "/preview";
+
       content.LinkCategory = LinkGetCategory (content.Id, response.Data.Link);
       return content;
     }

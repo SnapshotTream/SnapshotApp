@@ -27,23 +27,11 @@ namespace Snapshot.Client.Bff.Sdk.Data.Dto {
 
     public int StarRating { get; set; }
 
-    /// <summary>
-    /// UIでサムネイル画像を取得する際のURL
-    /// </summary>
-    /// <returns></returns>
-    public string ThumbnailImageSrcUrl { get; set; }
-
     public int ReadableCount { get; set; }
 
     public DateTime? LastReadDate { get; set; }
 
     public DateTime? ReadableDate { get; set; }
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <returns></returns>
-    public string PreviewFileUrl { get; set; }
 
     /// <summary>
     /// リンクしているカテゴリ情報

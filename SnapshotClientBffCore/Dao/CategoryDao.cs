@@ -89,14 +89,6 @@ namespace Snapshot.Client.Bff.Dao {
       var response_link_la = mClient.Execute<ResponseApi<List<Content>>> (request_link_la);
       if (response_link_la.IsSuccessful) {
         foreach (var content in response_link_la.Data.Value) {
-          // サムネイルが存在する場合は、サムネイルのURLを設定
-          if (!string.IsNullOrEmpty (content.ThumbnailKey)) {
-            content.ThumbnailImageSrcUrl = mDaoContext.ServerUrl + "/thumbnail/" + content.ThumbnailKey;
-          }
-
-          // コンテントのURLを設定
-          content.PreviewFileUrl = mDaoContext.ServerUrl + "/artifact/" + content.Id + "/preview";
-
           contentList.Add (content);
         }
       }
@@ -194,8 +186,7 @@ namespace Snapshot.Client.Bff.Dao {
       return response.Data.Value;
     }
     private void ApplyCategoryArtworkUrl (Category category) {
-      if (!string.IsNullOrEmpty (category.ArtworkThumbnailKey))
-        category.ThumbnailImageSrcUrl = mDaoContext.ServerUrl + "/thumbnail/" + category.ArtworkThumbnailKey;
+      // EMPTY
     }
 
   }

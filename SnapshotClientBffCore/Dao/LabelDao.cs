@@ -78,14 +78,6 @@ namespace Snapshot.Client.Bff.Dao {
       var response_link_contentList = mClient.Execute<ResponseApi<List<Content>>> (request_link_contentList);
       if (response_link_contentList.IsSuccessful) {
         foreach (var content in response_link_contentList.Data.Value) {
-          // サムネイルが存在する場合は、サムネイルのURLを設定
-          if (!string.IsNullOrEmpty (content.ThumbnailKey)) {
-            content.ThumbnailImageSrcUrl = mDaoContext.ServerUrl + "/thumbnail/" + content.ThumbnailKey;
-          }
-
-          // コンテントのURLを設定
-          content.PreviewFileUrl = mDaoContext.ServerUrl + "/artifact/" + content.Id + "/preview";
-
           contentList.Add (content);
         }
       }

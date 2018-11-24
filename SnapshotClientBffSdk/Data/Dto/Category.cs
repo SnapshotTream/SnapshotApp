@@ -48,11 +48,5 @@ namespace Snapshot.Client.Bff.Sdk.Data.Dto {
     public bool AlbumFlag { get; set; }
     public long? NextDisplayContentId { get; set; }
     public string BookmarkValue { get; set; }
-
-    /// <summary>
-    /// UIでサムネイル画像を取得する際のURL
-    /// </summary>
-    /// <returns></returns>
-    public string ThumbnailImageSrcUrl { get; set; }
   }
 }

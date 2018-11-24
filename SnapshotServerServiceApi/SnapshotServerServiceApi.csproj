@@ -8,11 +8,17 @@
     <Import Project="..\SnapshotParent\SnapshotServer.csproj" />
   </ImportGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+<PropertyGroup Condition="'$(Configuration)|$(RuntimeIdentifier)|$(Platform)'=='Debug||AnyCPU'">
     <DocumentationFile>bin\Debug\netcoreapp2.1\SnapshotServerServiceApi.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(RuntimeIdentifier)|$(Platform)'=='Release||AnyCPU'">
     <DocumentationFile>bin\Release\netcoreapp2.1\SnapshotServerServiceApi.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(RuntimeIdentifier)|$(Platform)'=='Debug|win-x64|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.1\win-x64\SnapshotServerServiceApi.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(RuntimeIdentifier)|$(Platform)'=='Release|win-x64|AnyCPU'">
+    <DocumentationFile>bin\Release\netcoreapp2.1\win-x64\SnapshotServerServiceApi.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

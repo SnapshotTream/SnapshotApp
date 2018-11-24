@@ -79,7 +79,7 @@ namespace Snapshot.Server.Service.Gateway {
 
     protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder) {
       if (!UsingHerokuPostgreSQLServerConnectionString (optionsBuilder)) {
-        string databaseFilePath = Path.Combine (this.context.DatabaseDirectoryPath, "pixstock.db");
+        string databaseFilePath = Path.Combine (this.context.DatabaseDirectoryPath, "snapshot.db");
         optionsBuilder.UseSqlite ("Data Source=" + databaseFilePath);
       }
     }

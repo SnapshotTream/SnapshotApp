@@ -29,20 +29,5 @@ namespace Foxpict.Service.Web.Controllers {
       return response;
     }
 
-    /// <summary>
-    ///
-    /// /// </summary>
-    /// <returns></returns>
-    [HttpGet ("register_workspace")]
-    public ResponseAapi<string> Get_RegisterWorkspace () {
-      var workspace = workspaceRepository.New ();
-      workspace.Name = "Private";
-      workspace.PhysicalPath = "/home/atachi/PixstockSample";
-      workspaceRepository.Save ();
-
-      var response = new ResponseAapi<string> ();
-      response.Value = "1.0.0";
-      return response;
-    }
   }
 }

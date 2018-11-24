@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using ElectronNET.API;
 using Microsoft.AspNetCore;
@@ -15,6 +16,13 @@ namespace Snapshot.Client.Entry.App {
       // NLog: setup the logger first to catch all errors
       var logger = NLog.Web.NLogBuilder.ConfigureNLog ("nlog.config").GetCurrentClassLogger ();
       try {
+        // SSL接続例外除外
+        ServicePointManager.ServerCertificateValidationCallback += (
+          sender,
+          certificate,
+          chain,
+          sslPolicyErrors) => true;
+
         BuildWebHost (args).Run ();
       } catch (Exception ex) {
         //NLog: catch setup errors

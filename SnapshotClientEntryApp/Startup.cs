@@ -47,6 +47,7 @@ namespace Snapshot.Client.Entry.App {
       });
 
       services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_1);
+      services.AddCors ();
       IntegrateSimpleInjector (services);
     }
 
@@ -127,6 +128,7 @@ namespace Snapshot.Client.Entry.App {
       mContainer.Register<IContentDao, ContentDao> ();
       mContainer.Register<ILabelDao, LabelDao> ();
       mContainer.Register<IEventLogDao, EventLogDao> ();
+      mContainer.Register<IThumbnailDao, ThumbnailDao> ();
     }
   }
 }

@@ -163,5 +163,20 @@ namespace Snapshot.Client.Entry.App.Controllers {
       LOGGER.Trace ("OUT");
       return result;
     }
+
+    /// <summary>
+    /// コンテント情報の既読状態を更新します。
+    /// </summary>
+    /// <param name="categoryId"></param>
+    /// <returns></returns>
+    [HttpPut ("category/{categoryId}/readable")]
+    public ActionResult<BffResponseApi<bool>> UpdateReadable (long categoryId) {
+      LOGGER.Trace ("IN");
+      var result = new BffResponseApi<bool> ();
+      mCategoryDao.UpdateRead (categoryId);
+      result.Value = true;
+      LOGGER.Trace ("OUT");
+      return result;
+    }
   }
 }

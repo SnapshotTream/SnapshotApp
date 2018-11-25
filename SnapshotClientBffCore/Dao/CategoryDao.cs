@@ -41,7 +41,7 @@ namespace Snapshot.Client.Bff.Dao {
         var category = response.Data.Value;
 
         //関連データ
-        category.Labels = response.Data.GetRelative<List<Label>>("labels");
+        category.Labels = response.Data.GetRelative<List<Label>> ("labels");
 
         // リンクデータ
         category.LinkSubCategoryList = LinkGetSubCategory (categoryId, offsetSubCategory, limitSubCategory, response);
@@ -77,6 +77,12 @@ namespace Snapshot.Client.Bff.Dao {
       ApplyCategoryArtworkUrl (response.Data.Value);
 
       return response.Data.Value;
+    }
+
+    public void UpdateRead (long categoryId) {
+      var request = new RestRequest ("category/{id}/readable", Method.PATCH);
+      request.AddUrlSegment ("id", categoryId);
+      var response = mClient.Execute<ServerResponseApi<Boolean>> (request);
     }
 
     private List<Content> LinkGetContentList (long categoryId, long offset, IRestResponse<ServerResponseApi<Category>> response) {

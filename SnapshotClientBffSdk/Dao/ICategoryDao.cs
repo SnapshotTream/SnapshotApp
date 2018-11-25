@@ -34,5 +34,11 @@ namespace Snapshot.Client.Bff.Sdk.Dao {
     /// <param name="categoryId"></param>
     /// <returns></returns>
     Category UpdateCategoryArtwork (long categoryId);
+
+    /// <summary>
+    /// カテゴリの既読状態を更新します。
+    /// </summary>
+    /// <param name="categoryId">カテゴリID</param>
+    void UpdateRead(long categoryId);
   }
 }

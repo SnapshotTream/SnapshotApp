@@ -8,6 +8,7 @@ using NLog;
 using Snapshot.Server.Extention.Sdk;
 using Snapshot.Server.Service.Apo.Builder;
 using Snapshot.Server.Service.Infra.Core;
+using Snapshot.Server.Service.Infra.Exception;
 using Snapshot.Server.Service.Infra.Model;
 using Snapshot.Server.Service.Infra.Repository;
 using Snapshot.Server.Service.Model;
@@ -81,6 +82,31 @@ namespace Foxpict.Service.Web.Controllers {
 
       var response = new ResponseAapi<ICategory> ();
       mBuilder.AttachCategoryEntity (category, response);
+      return response;
+    }
+
+    /// <summary>
+    /// カテゴリの既読状態を更新します
+    /// </summary>
+    /// <param name="category_id">カテゴリID</param>
+    /// <returns></returns>
+    [HttpPatch ("{category_id}/readable")]
+    [ProducesResponseType (200)]
+    public ResponseAapi<Boolean> UpdateReadableStatus (long category_id) {
+      var category = mCategoryRepository.Load (category_id);
+      if (category == null) throw new InterfaceOperationException ("カテゴリ情報が見つかりません。");
+
+      if (!category.ReadableFlag) {
+        category.ReadableFlag = true;
+        category.ReadableDate = DateTime.Now;
+      }
+      category.LastReadDate = DateTime.Now;
+      category.ReadableCount = category.ReadableCount + 1;
+
+      mCategoryRepository.Save ();
+
+      var response = new ResponseAapi<Boolean> ();
+      response.Value = true;
       return response;
     }
 

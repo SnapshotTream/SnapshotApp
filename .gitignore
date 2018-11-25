@@ -271,3 +271,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Production Files
+/SnapshotClientEntryApp/wwwroot/*
+/SnapshotClientEntryApp/Views/Shared/_ProductionBody.cshtml
+/SnapshotClientEntryApp/Views/Shared/_ProductionCss.cshtml

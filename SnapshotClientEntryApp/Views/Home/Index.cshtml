@@ -21,4 +21,9 @@
 
 </script>
 }
-<iframe id="PAST_MAINBODY" width="100%" height="100%" src="http://localhost:4200/" frameborder="0" scrolling="auto"></iframe>
+<environment include="Development">
+  <iframe id="PAST_MAINBODY" width="100%" height="100%" src="http://localhost:4200/" frameborder="0" scrolling="auto"></iframe>
+</environment>
+<environment include="Production">
+  <partial name="_ProductionBody" />
+</environment>

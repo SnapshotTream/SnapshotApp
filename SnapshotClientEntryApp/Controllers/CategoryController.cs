@@ -78,6 +78,9 @@ namespace Snapshot.Client.Entry.App.Controllers {
       var result = new BffResponseApi<Category[]> ();
 
       var category = mCategoryDao.LoadCategory (parentCategoryId);
+      if (category == null) {
+        throw new ApplicationException ("カテゴリ情報の取得に失敗しました。");
+      }
       result.Value = category.LinkSubCategoryList.ToArray ();
       LOGGER.Trace ("OUT");
       return result;
@@ -160,6 +163,25 @@ namespace Snapshot.Client.Entry.App.Controllers {
       pagenation.WindowSize = 5;
 
       result.Value = pagenation;
+      LOGGER.Trace ("OUT");
+      return result;
+    }
+
+    /// <summary>
+    /// カテゴリ情報に既読済みコンテントIDを設定します。
+    /// </summary>
+    /// <param name="categoryId"></param>
+    /// <param name="nextContentId"></param>
+    /// <returns></returns>
+    [HttpPut ("category/{categoryId}/nextcontent/{nextContentId}")]
+    public ActionResult<BffResponseApi<bool>> UpdateNextContent (long categoryId, long nextContentId) {
+      LOGGER.Trace ("IN");
+      var result = new BffResponseApi<bool> ();
+      Category entity = new Category ();
+      entity.NextDisplayContentId = nextContentId;
+
+      mCategoryDao.Update (categoryId, entity);
+      result.Value = true;
       LOGGER.Trace ("OUT");
       return result;
     }

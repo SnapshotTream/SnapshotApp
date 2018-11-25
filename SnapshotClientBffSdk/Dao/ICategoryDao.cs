@@ -29,6 +29,13 @@ namespace Snapshot.Client.Bff.Sdk.Dao {
     List<Category> FindCategory (bool? albumCategory, long[] labelId);
 
     /// <summary>
+    /// カテゴリ情報を永続化します。
+    /// </summary>
+    /// <param name="categoryId">カテゴリID</param>
+    /// <param name="entity">永続化オブジェクト</param>
+    void Update (long categoryId, Category entity);
+
+    /// <summary>
     /// カテゴリのアートワークを自動設定します。
     /// </summary>
     /// <param name="categoryId"></param>

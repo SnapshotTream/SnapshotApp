@@ -128,7 +128,7 @@ namespace Foxpict.Service.Web.Controllers {
       var response = new ResponseAapi<Boolean> ();
 
       var targetContent = mContentRepository.Load (id);
-      if (content == null) throw new InterfaceOperationException ("コンテント情報が見つかりません");
+      if (targetContent == null) throw new InterfaceOperationException ("コンテント情報が見つかりません");
 
       targetContent.ArchiveFlag = content.ArchiveFlag;
       targetContent.Caption = content.Caption;

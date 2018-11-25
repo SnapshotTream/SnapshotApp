@@ -47,7 +47,7 @@ namespace Foxpict.Service.Web.Controllers {
 
       if (thumbnail == null) {
         System.Reflection.Assembly assm = System.Reflection.Assembly.GetExecutingAssembly ();
-        string filePath = string.Format ("Foxpict.Service.Web.Assets.Icon.UI.Article3.png");
+        string filePath = string.Format ("SnapshotServerServiceApi.Assets.Icon.UI.Article3.png");
         return new FileStreamResult (assm.GetManifestResourceStream (filePath), "image/png");
       }
 

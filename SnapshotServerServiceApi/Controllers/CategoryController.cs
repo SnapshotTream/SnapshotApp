@@ -374,18 +374,35 @@ namespace Foxpict.Service.Web.Controllers {
     }
 
     /// <summary>
-    /// カテゴリのパラメータを更新します
+    /// カテゴリ情報を永続化します
     /// </summary>
     /// <remarks>
+    /// 永続化できるプロパティは下記の通りです。
+    /// ・Name
+    /// ・StarRating
+    /// ・NextDisplayContentId
     /// </remarks>
-    /// <param name="id">更新対象のカテゴリを示すキー</param>
-    /// <param name="value">カテゴリの更新対象のパラメータが含まれるJSON文字列</param>
-    [HttpPut ("{id}")]
-    public void PutCategoryProp (long id, [FromBody] string value) {
+    /// <param name="id">カテゴリID</param>
+    /// <param name="value">永続化エンティティ</param>
+    [HttpPatch ("{id}")]
+    public ResponseAapi<Boolean> UpdateEntity (long id, [FromBody] Category value) {
       LOGGER.Info ("REQUEST - {0} Body={1}", id, value);
 
-      mCategoryRepository.UpdatePopulateFromJson (id, value);
+      var targetCategory = mCategoryRepository.Load (id);
+      if (targetCategory == null) throw new InterfaceOperationException ("カテゴリ情報が見つかりません");
+
+      if (value.Name != null)
+        targetCategory.Name = value.Name;
+      if (value.StarRating >= 0)
+        targetCategory.StarRating = value.StarRating;
+      if (value.NextDisplayContentId.HasValue)
+        targetCategory.NextDisplayContentId = value.NextDisplayContentId.Value;
+
       mCategoryRepository.Save ();
+
+      var response = new ResponseAapi<Boolean> ();
+      response.Value = true;
+      return response;
     }
 
     /// <summary>

@@ -64,6 +64,18 @@ namespace Snapshot.Client.Bff.Dao {
       return response.Data.Value.FirstOrDefault ();
     }
 
+    public void Update (long categoryId, Category entity) {
+      var request = new RestRequest ("category/{id}", Method.PATCH);
+      request.RequestFormat = DataFormat.Json;
+      request.AddUrlSegment ("id", categoryId);
+
+      // このAPIで永続化できるプロパティの種類は、サーバー側のコントローラを参照してください。
+      request.AddBody (entity);
+
+      var response = mClient.Execute<ServerResponseApi<Boolean>> (request);
+      OutputResponseErrorMessage (response);
+    }
+
     public Category UpdateCategoryArtwork (long categoryId) {
       var request = new RestRequest ("category/{id}/thumbnail", Method.PATCH);
       request.AddUrlSegment ("id", categoryId);
@@ -111,37 +123,6 @@ namespace Snapshot.Client.Bff.Dao {
       }
 
       return categoryList;
-    }
-
-    /// <summary>
-    /// カテゴリ情報更新API
-    /// </summary>
-    /// <param name="categoryId">更新対象のカテゴリのキー</param>
-    /// <param name="category">更新データ(更新するプロパティのみ含んだオブジェクト)</param>
-    internal void Update (long categoryId, object category) {
-      var request = new RestRequest ("category/{id}", Method.PUT);
-      request.AddUrlSegment ("id", categoryId);
-      //var s = JsonConvert.SerializeObject (category);
-      request.AddJsonBody (JsonConvert.SerializeObject (category));
-
-      var response = mClient.Execute (request);
-      if (!response.IsSuccessful) {
-        throw new ApplicationException ("DAOの実行に失敗しました");
-      }
-    }
-
-    /// <summary>
-    /// カテゴリ表示情報更新API
-    /// </summary>
-    /// <param name="categoryId"></param>
-    internal void UpdateReading (long categoryId) {
-      var request = new RestRequest ("category/{id}/read", Method.PUT);
-      request.AddUrlSegment ("id", categoryId);
-
-      var response = mClient.Execute (request);
-      if (!response.IsSuccessful) {
-        throw new ApplicationException ("DAOの実行に失敗しました");
-      }
     }
 
     /// <summary>

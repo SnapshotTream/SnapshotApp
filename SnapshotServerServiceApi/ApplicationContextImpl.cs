@@ -134,8 +134,8 @@ namespace Foxpict.Service.Web {
 
       // 拡張機能
       var extentionManager = new ExtentionManager (container);
-      //extentionManager.AddPlugin (typeof (Snapshot.Server.Extention.Initialize.InitializeBuildExtention)); // 開発中は常に拡張機能を読み込む
-      //extentionManager.AddPlugin (typeof (Snapshot.Server.Extention.Webscribe.WebScribeExtention)); // 開発中は常に拡張機能を読み込む
+      extentionManager.AddPlugin (typeof (Snapshot.Server.Extention.Initialize.InitializeBuildExtention)); // 開発中は常に拡張機能を読み込む
+      extentionManager.AddPlugin (typeof (Snapshot.Server.Extention.Webscribe.WebScribeExtention)); // 開発中は常に拡張機能を読み込む
       container.RegisterInstance<ExtentionManager> (extentionManager);
       extentionManager.InitializePlugin (ExtentionDirectoryPath);
       extentionManager.CompletePlugin ();

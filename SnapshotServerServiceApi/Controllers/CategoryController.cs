@@ -395,8 +395,13 @@ namespace Foxpict.Service.Web.Controllers {
         targetCategory.Name = value.Name;
       if (value.StarRating >= 0)
         targetCategory.StarRating = value.StarRating;
-      if (value.NextDisplayContentId.HasValue)
-        targetCategory.NextDisplayContentId = value.NextDisplayContentId.Value;
+      if (value.NextDisplayContentId.HasValue) {
+        if (value.NextDisplayContentId.Value != 0) {
+          targetCategory.NextDisplayContentId = value.NextDisplayContentId.Value;
+        } else {
+          targetCategory.NextDisplayContentId = null;
+        }
+      }
 
       mCategoryRepository.Save ();
 

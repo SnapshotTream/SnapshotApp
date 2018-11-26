@@ -451,19 +451,48 @@ namespace Snapshot.Server.Service.Core.Service {
               continue;
             }
 
-            var label = this.mLabelRepository.LoadByName (group.ToString (), "Vfs");
-            if (label == null) {
-              label = this.mLabelRepository.New ();
-              label.Name = group.ToString ();
-              label.MetaType = group.Name == currentGroupNumber.ToString () ? "" : group.Name;
-              mLabelRepository.UpdateNormalizeName (label);
-              this.mLabelRepository.Save ();
-            } else {
-              label.MetaType = group.Name == currentGroupNumber.ToString () ? "" : group.Name;
-              this.mLabelRepository.Save ();
+            // 空文字は登録しない
+            if (string.IsNullOrWhiteSpace (group.ToString ())) {
+              continue;
             }
 
-            category.AddLabelRelation (label, LabelCauseType.EXTENTION);
+            var _labelName = group.ToString ();
+
+            // 正規表現グループから、マジックワードが含まれているかチェックする。
+            var groupNames = group.Name.Split ("__");
+            var groupName = groupNames[0];
+
+            if (groupNames.Length == 2) {
+              // マジックワード検証
+              var magic = groupNames[1];
+              if (magic == "SP1") {
+                // 区切り文字で区切る
+                char[] del = { ',', '、' };
+
+                foreach (var splitedLabel in _labelName.Split (del)) {
+                  RegisterLabel (splitedLabel, groupName);
+                }
+              }
+            } else {
+              RegisterLabel (_labelName, groupName);
+            }
+
+            void RegisterLabel (string labelName, string labelGroup) {
+              var label = this.mLabelRepository.LoadByName (labelName, "Vfs");
+              if (label == null) {
+                label = this.mLabelRepository.New ();
+                label.Name = labelName;
+                label.MetaType = labelGroup == currentGroupNumber.ToString () ? "" : labelGroup;
+                mLabelRepository.UpdateNormalizeName (label);
+                this.mLabelRepository.Save ();
+                category.AddLabelRelation (label, LabelCauseType.EXTENTION);
+              } else {
+                label.MetaType = labelGroup == currentGroupNumber.ToString () ? "" : labelGroup;
+                this.mLabelRepository.Save ();
+                category.AddLabelRelation (label, LabelCauseType.EXTENTION);
+              }
+            }
+
             currentGroupNumber++;
           }
 

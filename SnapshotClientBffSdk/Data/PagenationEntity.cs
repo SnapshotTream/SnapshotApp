@@ -8,13 +8,13 @@ namespace Snapshot.Client.Bff.Sdk.Data {
     /// 要素の総数
     /// </summary>
     /// <value></value>
-    public int Total { get; set; }
+    public long Total { get; set; }
 
     /// <summary>
     /// ページ数
     /// </summary>
     /// <value></value>
-    public int Page { get; set; }
+    public long Page { get; set; }
 
     /// <summary>
     /// 1ページあたりの要素数

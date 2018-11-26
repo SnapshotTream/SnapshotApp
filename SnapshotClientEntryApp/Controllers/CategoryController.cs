@@ -24,6 +24,8 @@ namespace Snapshot.Client.Entry.App.Controllers {
 
     readonly IContentDao mContentDao;
 
+    readonly int PPR = 500000; // ページネーションを実装するまでは十分大きな値を設定しておく
+
     /// <summary>
     /// コンストラクタ
     /// </summary>
@@ -67,13 +69,15 @@ namespace Snapshot.Client.Entry.App.Controllers {
       return result;
     }
 
+
     /// <summary>
     /// カテゴリの小階層カテゴリ一覧を取得します。
     /// </summary>
     /// <param name="parentCategoryId">カテゴリID</param>
+    /// <param name="pageNo">ページ</param>
     /// <returns>小階層カテゴリ一覧</returns>
     [HttpGet ("category/tree/{parentCategoryId}")]
-    public ActionResult<BffResponseApi<Category[]>> LoadCategoryTree (long parentCategoryId) {
+    public ActionResult<BffResponseApi<Category[]>> LoadCategoryTree (long parentCategoryId, [FromQuery] int pageNo) {
       LOGGER.Trace ("IN");
       var result = new BffResponseApi<Category[]> ();
 
@@ -81,8 +85,35 @@ namespace Snapshot.Client.Entry.App.Controllers {
       if (category == null) {
         throw new ApplicationException ("カテゴリ情報の取得に失敗しました。");
       }
-      result.Value = category.LinkSubCategoryList.ToArray ();
+
+      int page = 0;
+      if (pageNo <= 0)
+        page = 0;
+      else
+        page = pageNo;
+
+      result.Value = category.LinkSubCategoryList.Skip (this.PPR * page).Take (this.PPR).ToArray ();
       LOGGER.Trace ("OUT");
+      return result;
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="parentCategoryId"></param>
+    /// <returns></returns>
+    [HttpGet ("category/tree/{parentCategoryId}/total")]
+    public ActionResult<BffResponseApi<PagenationEntity>> LoadCategoryTreeTotal (long parentCategoryId) {
+      var category = mCategoryDao.LoadCategory (parentCategoryId);
+      var total = category.LinkSubCategoryList.LongCount ();
+
+      var pagenation = new PagenationEntity ();
+      pagenation.Page = this.calcPage (total);
+      pagenation.Total = total;
+      pagenation.WindowSize = this.PPR;
+
+      var result = new BffResponseApi<PagenationEntity> ();
+      result.Value = pagenation;
       return result;
     }
 
@@ -177,11 +208,22 @@ namespace Snapshot.Client.Entry.App.Controllers {
     public ActionResult<BffResponseApi<bool>> UpdateNextContent (long categoryId, long nextContentId) {
       LOGGER.Trace ("IN");
       var result = new BffResponseApi<bool> ();
-      Category entity = new Category ();
-      entity.NextDisplayContentId = nextContentId;
 
-      mCategoryDao.Update (categoryId, entity);
-      result.Value = true;
+      var category = mCategoryDao.LoadCategory (categoryId);
+      if (category.LinkContentList.Last ().Id == nextContentId) {
+        Category entity = new Category ();
+        entity.NextDisplayContentId = 0;
+
+        mCategoryDao.Update (categoryId, entity);
+        result.Value = false;
+      } else {
+        Category entity = new Category ();
+        entity.NextDisplayContentId = nextContentId;
+
+        mCategoryDao.Update (categoryId, entity);
+        result.Value = true;
+      }
+
       LOGGER.Trace ("OUT");
       return result;
     }
@@ -199,6 +241,19 @@ namespace Snapshot.Client.Entry.App.Controllers {
       result.Value = true;
       LOGGER.Trace ("OUT");
       return result;
+    }
+
+    /// <summary>
+    /// ShareCommonに持っていく。
+    /// </summary>
+    /// <param name="total"></param>
+    /// <returns></returns>
+    private long calcPage (long total) {
+      if (total % this.PPR == 0) {
+        return total / this.PPR;
+      } else {
+        return total / this.PPR + 1;
+      }
     }
   }
 }
